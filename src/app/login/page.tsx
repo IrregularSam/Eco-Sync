@@ -2,17 +2,19 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // TODO: Connect to Supabase Auth & Role-based redirect
+    // Simulate Customer Login
     setTimeout(() => {
       setLoading(false);
-      alert('Login integration coming soon!');
+      router.push('/user');
     }, 1000);
   };
 
@@ -41,6 +43,16 @@ export default function Login() {
             {loading ? 'Authenticating...' : 'Log In'}
           </button>
         </form>
+
+        {/* DEMO NAVIGATION LINKS */}
+        <div className="mt-8 border-t-3 border-neo-border pt-6">
+          <p className="font-black text-center uppercase mb-4 text-sm text-neo-secondary">Presentation Demo Links</p>
+          <div className="grid gap-3">
+             <button onClick={() => router.push('/user')} className="neo-btn-secondary w-full text-sm">Demo: Log in as Customer</button>
+             <button onClick={() => router.push('/admin')} className="neo-btn-secondary w-full text-sm">Demo: Log in as Admin</button>
+             <button onClick={() => router.push('/staff')} className="neo-btn-secondary w-full text-sm">Demo: Log in as Staff</button>
+          </div>
+        </div>
 
         <div className="mt-6 text-center font-bold border-t-3 border-neo-border pt-6 mt-8">
           New here? <Link href="/signup" className="text-neo-secondary hover:underline">Get a Smart Bin</Link>

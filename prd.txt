@@ -1,0 +1,95 @@
+PRODUCT REQUIREMENTS DOCUMENT V2.0
+Eco-Sync v2.0
+VERSION
+v2.0 (Triad Scope)
+AUTHOR
+Dahunsi Samuel (DIVO)
+DATE
+May 2026
+STATUS
+Architecture Locked
+1. System Architecture: The Triad
+Eco-Sync has evolved from a simple reporting app into a full-scale Enterprise
+Resource Planning (ERP) platform. The ecosystem is divided into three distinct
+operational layers that interact in real-time:
+1. The User
+The paying customer
+generating demand. Focuses
+on billing, bin requests, and
+triggering pickup alerts.
+2. The Admin
+The strategic command.
+Focuses on HR, route
+generation, fleet
+management, and financial
+oversight.
+3. The Staff
+The execution layer on the
+ground. Divided into Team
+Leads (Nav/Verification) and
+Normal Staff (Rosters).
+2. User Personas & Feature Modules
+2.1 THE USER (CUSTOMER HUB) CLIENT APP
+Module Functional Requirements
+Onboarding &
+Provisioning
+User registers full address (Street, House No.). Applies for route assignment. System
+generates an application ticket. Upon Admin approval, a unique Bin Number is
+provisioned and physical delivery is tracked in-app.
+In-app wallet/payment integration for setup fees and monthly subscription renewals.
+
+Module Functional Requirements
+Financial
+Gateway
+Service Triggers One-tap "Bin Full" alarm. Receives proximity push notifications ("Team Titan is 2 blocks
+away").
+2.2 THE ADMIN (COMMAND CENTER) WEB DASHBOARD
+Module Functional Requirements
+Dynamic
+Dispatch
+Receives critical alerts when a route hits "Critical Mass" of full bins. Assigns available
+teams to the route.
+HR & Fleet Ops Create/manage "Teams". Add/remove staff. Assign/demote Team Leads. Build weekly
+duty rosters and shifts.
+Application CRMReview new user signups, verify addresses, approve applications, and trigger bin
+delivery logistics.
+2.3 THE STAFF (GROUND OPS) FIELD APP
+Team Leads (Supervisors)
+Route Navigation: Receives critical dispatch alerts. Opens in-app GPS routing
+mapping the fastest path through the assigned route.
+Resolution Protocol: Marks bins as resolved. (See Section 3 for verification
+protocol).
+Normal Staff (Field Workers)
+Duty Roster: Views assigned shifts, dates, and designated Team Lead.
+Attendance Logic: GPS-gated clock-in/clock-out functionality at the depot.
+3. Advanced Logic & Enterprise Protocols
+To ensure business viability and operational truth, Eco-Sync relies on three advanced
+logic gates:
+A. The Route-Health Algorithm (Auto-Scaling)
+Admins do not manually hunt for full bins. The system groups houses by 
+route_id. Once 70% of users on "Route Alpha" trigger the "Bin Full" alarm, the
+system automatically elevates the route to CRITICAL status and recommends
+dispatch.
+B. QR/NFC Proof of Service (Anti-Fraud)
+Staff cannot blindly click "Resolved" from the truck. Every physical bin contains a
+registered QR code. The Team Lead must scan the QR code to clear the bin from
+the map, triggering an automatic SMS/Push to the User confirming the exact
+pickup time.
+C. Defaulter Logic (Revenue Protection)
+If a User fails to pay their monthly fee:
+1. Their app access is restricted to the Payment Gateway.
+• 
+• 
+• 
+• 
+2. The "Bin Full" alarm is hard-disabled.
+3. On the Team Lead's navigation map, the defaulter's house is rendered in RED
+with a "SKIP: UNPAID" tag.
+4. Expanded Data Schema (Supabase)
+Table Key Fields Purpose
+users uid, role, status (active/defaulter), route_id Identity & billing status.
+bins bin_id, user_id, qr_hash, fill_status Tracks physical hardware.
+teams team_id, lead_id, truck_id, current_route HR team grouping.
+shifts shift_id, staff_id, date, clock_in_time, status Payroll and attendance.
+routes route_id, name, polyline, current_capacity The Route-Health engine.
+ECO-SYNC PRD v2.0 // ENTERPRISE ARCHITECTURE // DIVO PRODUCTIONS

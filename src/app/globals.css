@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-neo-bg: #FFFBF2;
+  --color-neo-primary: #00E676;
+  --color-neo-secondary: #FF4F00;
+  --color-neo-accent: #7C3AED;
+  --color-neo-border: #000000;
+  --color-neo-text: #000000;
+  --shadow-neo: 4px 4px 0px 0px rgba(0,0,0,1);
+  --shadow-neo-hover: 2px 2px 0px 0px rgba(0,0,0,1);
+  --border-width-3: 3px;
+  --radius-neo: 12px;
+  --radius-pill: 9999px;
+  --font-sans: 'Outfit', sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-neo-bg);
+    color: var(--color-neo-text);
+    font-family: var(--font-sans);
+  }
+  
+  ::selection {
+    background-color: var(--color-neo-primary);
+    color: black;
+  }
+}
+
+@layer components {
+  /* Core Neobrutalism UI Elements */
+  .neo-btn {
+    @apply inline-flex items-center justify-center font-bold px-6 py-3 border-3 border-neo-border rounded-pill bg-neo-primary text-neo-text shadow-neo transition-all duration-200 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-neo-hover active:translate-x-[4px] active:translate-y-[4px] active:shadow-none;
+  }
+
+  .neo-btn-secondary {
+    @apply inline-flex items-center justify-center font-bold px-6 py-3 border-3 border-neo-border rounded-pill bg-white text-neo-text shadow-neo transition-all duration-200 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-neo-hover active:translate-x-[4px] active:translate-y-[4px] active:shadow-none;
+  }
+
+  .neo-btn-danger {
+    @apply inline-flex items-center justify-center font-bold px-6 py-3 border-3 border-neo-border rounded-pill bg-neo-secondary text-neo-text shadow-neo transition-all duration-200 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-neo-hover active:translate-x-[4px] active:translate-y-[4px] active:shadow-none;
+  }
+
+  .neo-card {
+    @apply bg-white border-3 border-neo-border rounded-neo shadow-neo p-6;
+  }
+
+  .neo-input {
+    @apply w-full px-4 py-3 border-3 border-neo-border rounded-neo bg-white font-semibold text-neo-text shadow-neo focus:outline-none focus:ring-4 focus:ring-neo-primary/50 transition-all;
+  }
+}

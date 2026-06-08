@@ -1,242 +1,309 @@
 import Link from 'next/link';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { Leaf, ArrowRight, LayoutDashboard, Route, ShieldCheck, BarChart3, Users, Zap } from 'lucide-react';
 
 export default function Home() {
   return (
-    <main className="min-h-screen relative overflow-hidden flex flex-col bg-neo-bg">
-      {/* Decorative Grid Background */}
-      <div className="absolute inset-0 z-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 2px, transparent 2px)', backgroundSize: '32px 32px' }}></div>
-      
-      {/* Navigation */}
-      <nav className="relative z-20 px-4 md:px-8 py-4 md:py-6 flex justify-between items-center border-b-3 border-neo-border bg-neo-bg sticky top-0">
-        <div className="flex items-center gap-2 text-xl md:text-2xl font-black tracking-tight uppercase">
-          <div className="w-8 h-8 bg-neo-primary border-3 border-neo-border flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-            ♻
+    <main className="min-h-screen bg-slate-50 dark:bg-[#1a1a1b] transition-colors duration-200 flex flex-col">
+      {/* Top Navigation */}
+      <nav className="border-b border-slate-200 dark:border-[#3c4043] bg-white/80 dark:bg-[#202124]/80 backdrop-blur-md sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-md bg-brand-600 flex items-center justify-center text-white shadow-sm">
+              <Leaf className="h-5 w-5" />
+            </div>
+            <span className="text-xl font-medium tracking-tight text-slate-900 dark:text-white">Eco-Sync</span>
           </div>
-          <span className="hidden sm:inline">Eco-Sync</span>
-        </div>
-        
-        {/* Nav Links (Desktop) */}
-        <div className="hidden md:flex gap-8 font-bold uppercase text-sm tracking-widest">
-          <Link href="#features" className="hover:text-neo-primary transition-colors">Features</Link>
-          <Link href="#impact" className="hover:text-neo-primary transition-colors">Our Impact</Link>
-          <Link href="#mission" className="hover:text-neo-primary transition-colors">Mission</Link>
-          <Link href="#testimonials" className="hover:text-neo-primary transition-colors">Reviews</Link>
-        </div>
+          
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600 dark:text-slate-300">
+            <Link href="#how-it-works" className="hover:text-slate-900 dark:hover:text-white transition-colors">How it Works</Link>
+            <Link href="#features" className="hover:text-slate-900 dark:hover:text-white transition-colors">Features</Link>
+            <Link href="#impact" className="hover:text-slate-900 dark:hover:text-white transition-colors">Impact</Link>
+          </div>
 
-        <div className="flex gap-2 md:gap-4">
-          <Link href="/login" className="neo-btn-secondary py-2 px-4 md:px-6">Log In</Link>
-          <Link href="/signup" className="neo-btn py-2 px-4 md:px-6">Sign Up</Link>
+          <div className="flex items-center gap-4">
+            <ThemeToggle />
+            <Link href="/login" className="btn-text hidden sm:inline-flex text-sm">Sign in</Link>
+            <Link href="/student" className="btn-primary text-sm shadow-sm">
+              Console
+            </Link>
+          </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative z-10 container mx-auto px-4 sm:px-6 py-16 md:py-24 flex flex-col md:flex-row items-center gap-12">
-        <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left">
-          <div className="inline-block px-4 py-1 border-3 border-neo-border bg-white font-bold rounded-pill shadow-neo mb-6 md:mb-8 rotate-[-2deg]">
-            🌿 Waste Management for Modern Cities
-          </div>
-          
-          <h1 className="text-5xl sm:text-6xl md:text-8xl font-black uppercase tracking-tighter mb-6 md:mb-8 leading-none">
-            Don't Let Your City Go To <span className="text-neo-primary inline-block rotate-[1deg]">Waste.</span>
-          </h1>
-          
-          <p className="text-lg md:text-2xl font-semibold max-w-2xl mb-8 md:mb-12 border-3 border-neo-border p-4 md:p-6 bg-[#FFD166] shadow-neo rounded-neo rotate-[1deg]">
-            The only smart bin subscription you'll ever need. Automate your waste pickups and keep your neighborhood pristine.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 md:gap-6 w-full md:w-auto">
-            <Link href="/signup" className="neo-btn text-lg md:text-xl px-8 py-4 w-full md:w-auto text-center">
-              Get Your Smart Bin Today →
-            </Link>
-          </div>
+      <section className="pt-32 pb-20 px-6 max-w-7xl mx-auto flex flex-col items-center text-center">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 text-sm font-medium mb-8 border border-brand-100 dark:border-brand-900/50">
+          <Zap className="w-4 h-4" />
+          <span>The new standard for campus sustainability</span>
         </div>
-
-        <div className="flex-1 w-full max-w-md md:max-w-xl relative">
-          <div className="absolute inset-0 bg-neo-accent rounded-neo border-3 border-neo-border shadow-neo translate-x-4 translate-y-4"></div>
-          <img 
-            src="/bin.png" 
-            alt="Eco-Sync Smart Bin" 
-            className="w-full h-auto relative z-10 border-3 border-neo-border rounded-neo shadow-neo bg-white object-cover"
-          />
+        
+        <h1 className="text-5xl md:text-7xl font-semibold tracking-tight text-slate-900 dark:text-white max-w-5xl mb-8 leading-[1.1]">
+          Waste management, engineered for scale.
+        </h1>
+        
+        <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mb-12 leading-relaxed">
+          A centralized platform empowering students to track eco-points, and administrators to orchestrate campus-wide fleet dispatching with mathematical precision.
+        </p>
+        
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Link href="/student" className="btn-primary px-8 py-3 text-base group">
+            Student Portal
+            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+          </Link>
+          <Link href="/board" className="btn-secondary px-8 py-3 text-base">
+            Admin Console
+          </Link>
         </div>
       </section>
 
-      {/* Mission & Impact Statistics */}
-      <section id="impact" className="relative z-10 bg-white border-y-3 border-neo-border py-16 px-4 sm:px-6">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x-0 md:divide-x-3 divide-y-3 md:divide-y-0 divide-neo-border">
-            <div className="p-4">
-              <div className="text-5xl md:text-7xl font-black text-neo-primary mb-2">40%</div>
-              <div className="font-bold uppercase text-neo-text/70">Reduction in CO2</div>
-            </div>
-            <div className="p-4 pt-8 md:pt-4">
-              <div className="text-5xl md:text-7xl font-black text-neo-secondary mb-2">10k+</div>
-              <div className="font-bold uppercase text-neo-text/70">Active Smart Bins</div>
-            </div>
-            <div className="p-4 pt-8 md:pt-4">
-              <div className="text-5xl md:text-7xl font-black text-neo-accent mb-2">24/7</div>
-              <div className="font-bold uppercase text-neo-text/70">Fleet Monitoring</div>
-            </div>
-            <div className="p-4 pt-8 md:pt-4">
-              <div className="text-5xl md:text-7xl font-black text-[#FFD166] mb-2">99%</div>
-              <div className="font-bold uppercase text-neo-text/70">On-Time Pickups</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Product Interface Preview */}
+      <section className="px-6 pb-32 max-w-6xl mx-auto w-full">
+        <div className="rounded-2xl border border-slate-200 dark:border-[#3c4043] bg-white/50 dark:bg-[#202124]/50 p-2 md:p-4 shadow-2xl dark:shadow-none">
+          <div className="rounded-xl border border-slate-200 dark:border-[#3c4043] bg-slate-50 dark:bg-[#1a1a1b] overflow-hidden flex flex-col relative select-none">
+             
+             {/* Fake Browser Header */}
+             <div className="h-12 border-b border-slate-200 dark:border-[#3c4043] bg-white dark:bg-[#202124] flex items-center px-4 gap-4">
+               <div className="flex gap-2">
+                 <div className="w-3 h-3 rounded-full bg-slate-300 dark:bg-[#3c4043]"></div>
+                 <div className="w-3 h-3 rounded-full bg-slate-300 dark:bg-[#3c4043]"></div>
+                 <div className="w-3 h-3 rounded-full bg-slate-300 dark:bg-[#3c4043]"></div>
+               </div>
+               <div className="h-6 flex-1 max-w-md mx-auto bg-slate-100 dark:bg-[#1a1a1b] rounded-md border border-slate-200 dark:border-[#3c4043] flex items-center px-3">
+                 <span className="text-[10px] text-slate-400 font-mono">ecosync.app/student</span>
+               </div>
+             </div>
 
-      {/* How it Works / Features Section */}
-      <section id="features" className="relative z-10 bg-neo-primary border-b-3 border-neo-border py-20 px-4 sm:px-6">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-black uppercase inline-block bg-white border-3 border-neo-border px-8 py-4 shadow-neo -rotate-1">
-              How Eco-Sync Works
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <div className="neo-card hover:-translate-y-2 transition-transform duration-300">
-              <div className="w-16 h-16 bg-[#FFD166] border-3 border-neo-border rounded-full flex items-center justify-center text-3xl shadow-neo mb-6">
-                1️⃣
-              </div>
-              <h3 className="text-2xl font-black mb-2 uppercase">Get Your Bin</h3>
-              <p className="font-medium text-lg">Sign up online and we'll deliver a QR-enabled smart bin right to your doorstep within 48 hours.</p>
-            </div>
-            
-            <div className="neo-card hover:-translate-y-2 transition-transform duration-300">
-              <div className="w-16 h-16 bg-white border-3 border-neo-border rounded-full flex items-center justify-center text-3xl shadow-neo mb-6">
-                2️⃣
-              </div>
-              <h3 className="text-2xl font-black mb-2 uppercase">One-Tap Alert</h3>
-              <p className="font-medium text-lg">When your bin is full, just tap a single button in our app to alert our dispatchers instantly.</p>
-            </div>
-            
-            <div className="neo-card hover:-translate-y-2 transition-transform duration-300 bg-neo-text text-white">
-              <div className="w-16 h-16 bg-neo-accent border-3 border-white rounded-full flex items-center justify-center text-3xl shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] mb-6 text-white">
-                3️⃣
-              </div>
-              <h3 className="text-2xl font-black mb-2 uppercase">Guaranteed Pickup</h3>
-              <p className="font-medium text-lg">Our fleet arrives, scans your QR code as proof of service, and you get an instant push notification.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Expanded Mission Section */}
-      <section id="mission" className="relative z-10 py-24 px-4 sm:px-6">
-        <div className="container mx-auto max-w-5xl flex flex-col md:flex-row gap-12 items-center">
-          <div className="flex-1">
-            <h2 className="text-4xl md:text-5xl font-black uppercase mb-6">
-              Our Mission is <span className="text-neo-primary">Zero Waste.</span>
-            </h2>
-            <p className="text-xl font-medium mb-6 leading-relaxed">
-              For decades, city waste management has relied on static, inefficient routes. Trucks drive down streets regardless of whether bins are actually full, burning excess fuel and missing overflowing areas.
-            </p>
-            <p className="text-xl font-medium leading-relaxed">
-              Eco-Sync fixes this by equipping every household with a smart bin and treating our fleet as an on-demand dynamic network. We only dispatch where needed, drastically reducing municipal carbon footprints.
-            </p>
-          </div>
-          <div className="w-full md:w-1/3 flex flex-col gap-6">
-            <div className="bg-white border-3 border-neo-border p-6 shadow-neo rotate-2">
-              <h4 className="font-black text-2xl uppercase mb-2">Dynamic Routing</h4>
-              <p className="font-medium">Algorithmically optimized paths for our ground ops team.</p>
-            </div>
-            <div className="bg-neo-secondary text-white border-3 border-neo-border p-6 shadow-neo -rotate-2">
-              <h4 className="font-black text-2xl uppercase mb-2">Proof of Service</h4>
-              <p className="font-medium text-white/90">QR-verified scans ensure no bin is ever left behind.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section id="testimonials" className="relative z-10 bg-[#FFD166] border-y-3 border-neo-border py-20 px-4 sm:px-6">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black uppercase">What Neighborhoods Say</h2>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white border-3 border-neo-border p-8 shadow-neo relative">
-              <div className="text-6xl absolute top-4 right-6 opacity-20">"</div>
-              <p className="text-xl font-bold mb-6 relative z-10">
-                "Since switching to Eco-Sync, our neighborhood streets have never been cleaner. The one-tap pickup feature is absolutely brilliant."
-              </p>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-neo-primary border-3 border-neo-border rounded-full flex items-center justify-center font-black">S</div>
-                <div>
-                  <h4 className="font-black uppercase">Sarah Jenkins</h4>
-                  <p className="text-sm font-bold text-neo-text/70">HOA President, Downtown Area</p>
+             {/* Fake App Body (Student Dashboard Replica) */}
+             <div className="flex overflow-hidden h-[450px]">
+                {/* Sidebar Replica */}
+                <div className="w-48 border-r border-slate-200 dark:border-[#3c4043] bg-white dark:bg-[#202124] py-4 hidden md:flex flex-col">
+                   <div className="px-4 mb-4 flex items-center gap-2">
+                     <div className="w-6 h-6 rounded bg-brand-600 flex items-center justify-center text-white">
+                        <Leaf className="w-3 h-3" />
+                     </div>
+                     <span className="text-sm font-semibold text-slate-900 dark:text-white">Eco-Sync</span>
+                   </div>
+                   <div className="space-y-1 pr-4">
+                     <div className="flex items-center gap-2 px-4 py-2 bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 rounded-r-full text-xs font-medium">
+                       <LayoutDashboard className="w-4 h-4" /> Dashboard
+                     </div>
+                     <div className="flex items-center gap-2 px-4 py-2 text-slate-500 dark:text-slate-400 text-xs font-medium">
+                       <Leaf className="w-4 h-4" /> Log Waste
+                     </div>
+                     <div className="flex items-center gap-2 px-4 py-2 text-slate-500 dark:text-slate-400 text-xs font-medium">
+                       <ShieldCheck className="w-4 h-4" /> Report Issue
+                     </div>
+                   </div>
                 </div>
-              </div>
-            </div>
-            
-            <div className="bg-white border-3 border-neo-border p-8 shadow-neo relative">
-              <div className="text-6xl absolute top-4 right-6 opacity-20">"</div>
-              <p className="text-xl font-bold mb-6 relative z-10">
-                "I love getting the push notification the second they scan my bin. It proves they actually did the job. Top-tier service."
-              </p>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-neo-accent text-white border-3 border-neo-border rounded-full flex items-center justify-center font-black">M</div>
-                <div>
-                  <h4 className="font-black uppercase">Marcus Thorne</h4>
-                  <p className="text-sm font-bold text-neo-text/70">Local Business Owner</p>
+
+                {/* Main Content Replica */}
+                <div className="flex-1 p-6 md:p-8 flex flex-col bg-slate-50 dark:bg-[#1a1a1b] overflow-hidden">
+                   <div className="mb-6">
+                     <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-1">Welcome back, Dahunsi</h2>
+                     <p className="text-xs text-slate-500 dark:text-slate-400">Here's your Eco-Sync summary for today.</p>
+                   </div>
+                   
+                   <div className="grid grid-cols-3 gap-4 mb-6">
+                     <div className="bg-white dark:bg-[#202124] p-4 rounded-lg border border-slate-200 dark:border-[#3c4043] shadow-sm">
+                        <div className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Eco Points</div>
+                        <div className="text-2xl font-semibold text-brand-600 dark:text-brand-400 mb-1">1,250</div>
+                        <div className="text-[10px] text-slate-500 dark:text-slate-400">+50 this week</div>
+                     </div>
+                     <div className="bg-white dark:bg-[#202124] p-4 rounded-lg border border-slate-200 dark:border-[#3c4043] shadow-sm">
+                        <div className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Waste Logged</div>
+                        <div className="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-1">12kg</div>
+                        <div className="text-[10px] text-slate-500 dark:text-slate-400">Top 15% of campus</div>
+                     </div>
+                     <div className="bg-white dark:bg-[#202124] p-4 rounded-lg border border-slate-200 dark:border-[#3c4043] shadow-sm">
+                        <div className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Next Pickup</div>
+                        <div className="text-2xl font-semibold text-orange-600 dark:text-orange-400 mb-1">Tomorrow</div>
+                        <div className="text-[10px] text-slate-500 dark:text-slate-400">08:00 AM - 10:00 AM</div>
+                     </div>
+                   </div>
+
+                   <div className="flex-1 bg-white dark:bg-[#202124] rounded-lg border border-slate-200 dark:border-[#3c4043] shadow-sm">
+                     <div className="px-4 py-3 border-b border-slate-200 dark:border-[#3c4043]">
+                       <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Recent Activity</h3>
+                     </div>
+                     <div className="p-4 space-y-3">
+                       {[1, 2].map((i) => (
+                         <div key={i} className="flex items-center gap-3">
+                           <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-[#303134] flex items-center justify-center text-slate-500">
+                             <Leaf className="w-3.5 h-3.5" />
+                           </div>
+                           <div>
+                             <p className="text-xs font-medium text-slate-900 dark:text-white">Logged 2kg of Plastic</p>
+                             <p className="text-[10px] text-slate-500 dark:text-slate-400">2 days ago</p>
+                           </div>
+                         </div>
+                       ))}
+                     </div>
+                   </div>
                 </div>
+             </div>
+
+             {/* Overlay Gradient for polish */}
+             <div className="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-transparent dark:from-[#1a1a1b] pointer-events-none opacity-40"></div>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section id="how-it-works" className="py-24 bg-white dark:bg-[#202124] border-t border-slate-200 dark:border-[#3c4043]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="mb-16 text-center max-w-3xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 dark:text-white mb-4">How Eco-Sync Works</h2>
+            <p className="text-slate-600 dark:text-slate-400 text-lg">A simple, rewarding process for a cleaner campus.</p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-8 relative">
+            {/* Connecting Line */}
+            <div className="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-0.5 bg-slate-200 dark:bg-[#3c4043] z-0"></div>
+
+            <div className="relative z-10 flex flex-col items-center text-center">
+              <div className="w-16 h-16 rounded-full bg-white dark:bg-[#202124] border-4 border-slate-50 dark:border-[#1a1a1b] shadow-sm flex items-center justify-center text-brand-600 dark:text-brand-400 mb-6">
+                <span className="text-xl font-bold">1</span>
               </div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Find a Bin</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Locate the nearest designated Eco-Sync waste bin on campus.</p>
+            </div>
+
+            <div className="relative z-10 flex flex-col items-center text-center">
+              <div className="w-16 h-16 rounded-full bg-white dark:bg-[#202124] border-4 border-slate-50 dark:border-[#1a1a1b] shadow-sm flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6">
+                <span className="text-xl font-bold">2</span>
+              </div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Drop Waste</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Sort and dispose of your recyclables in the correct category.</p>
+            </div>
+
+            <div className="relative z-10 flex flex-col items-center text-center">
+              <div className="w-16 h-16 rounded-full bg-white dark:bg-[#202124] border-4 border-slate-50 dark:border-[#1a1a1b] shadow-sm flex items-center justify-center text-orange-600 dark:text-orange-400 mb-6">
+                <span className="text-xl font-bold">3</span>
+              </div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Log on Platform</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Open the student app and log the estimated weight and type.</p>
+            </div>
+
+            <div className="relative z-10 flex flex-col items-center text-center">
+              <div className="w-16 h-16 rounded-full bg-white dark:bg-[#202124] border-4 border-slate-50 dark:border-[#1a1a1b] shadow-sm flex items-center justify-center text-yellow-500 mb-6">
+                <span className="text-xl font-bold">4</span>
+              </div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Score Points</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Earn Eco-Points instantly and climb the campus leaderboard.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="relative z-10 py-24 px-4 sm:px-6 text-center">
-        <h2 className="text-5xl md:text-7xl font-black uppercase mb-8 max-w-4xl mx-auto">
-          Ready to Clean Up Your Act?
-        </h2>
-        <Link href="/signup" className="neo-btn text-2xl px-12 py-6">
-          Join the Fleet Today
-        </Link>
+      {/* Features Section */}
+      <section id="features" className="py-32 bg-slate-50 dark:bg-[#1a1a1b] border-t border-slate-200 dark:border-[#3c4043]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="mb-20 text-center max-w-3xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 dark:text-white mb-4">Enterprise-grade capabilities</h2>
+            <p className="text-slate-600 dark:text-slate-400 text-lg">Robust tools designed for scale, efficiency, and flawless campus integration.</p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="card card-hover p-10 flex flex-col items-start">
+              <div className="w-12 h-12 rounded-lg bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 flex items-center justify-center mb-6 border border-brand-100 dark:border-brand-900/50">
+                <LayoutDashboard className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-3">Structured Logging</h3>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">Categorize and record waste deposits with precise metadata, ensuring perfectly tracked eco-points across the student body.</p>
+            </div>
+            
+            <div className="card card-hover p-10 flex flex-col items-start">
+              <div className="w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-6 border border-blue-100 dark:border-blue-900/50">
+                <Route className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-3">Intelligent Dispatch</h3>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">Automatically aggregate facility reports and instantly dispatch maintenance fleets to critical campus sectors.</p>
+            </div>
+            
+            <div className="card card-hover p-10 flex flex-col items-start">
+              <div className="w-12 h-12 rounded-lg bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 flex items-center justify-center mb-6 border border-orange-100 dark:border-orange-900/50">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-3">Incident Management</h3>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">Centralized ticketing system for reported damages and missed pickups, complete with real-time status tracking.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Impact Statistics */}
+      <section id="impact" className="py-24 bg-slate-50 dark:bg-[#1a1a1b] border-t border-slate-200 dark:border-[#3c4043]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x-0 md:divide-x divide-slate-200 dark:divide-[#3c4043]">
+            <div className="flex flex-col items-center p-4">
+              <BarChart3 className="w-6 h-6 text-slate-400 dark:text-slate-500 mb-4" />
+              <div className="text-5xl font-semibold text-slate-900 dark:text-white mb-2 tracking-tight">45%</div>
+              <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Carbon Reduction</div>
+            </div>
+            <div className="flex flex-col items-center p-4">
+              <Users className="w-6 h-6 text-slate-400 dark:text-slate-500 mb-4" />
+              <div className="text-5xl font-semibold text-slate-900 dark:text-white mb-2 tracking-tight">12k</div>
+              <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Active Users</div>
+            </div>
+            <div className="flex flex-col items-center p-4">
+              <Leaf className="w-6 h-6 text-slate-400 dark:text-slate-500 mb-4" />
+              <div className="text-5xl font-semibold text-slate-900 dark:text-white mb-2 tracking-tight">850t</div>
+              <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Waste Recycled</div>
+            </div>
+            <div className="flex flex-col items-center p-4">
+              <Zap className="w-6 h-6 text-slate-400 dark:text-slate-500 mb-4" />
+              <div className="text-5xl font-semibold text-slate-900 dark:text-white mb-2 tracking-tight">99%</div>
+              <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest">SLA Uptime</div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 bg-neo-bg pt-16 pb-8 px-4 sm:px-6 border-t-3 border-neo-border mt-auto">
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-          <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center gap-2 text-3xl font-black tracking-tight uppercase mb-4">
-              <div className="w-10 h-10 bg-neo-primary border-3 border-neo-border flex items-center justify-center shadow-neo">
-                ♻
+      <footer className="bg-white dark:bg-[#202124] border-t border-slate-200 dark:border-[#3c4043] py-20 mt-auto">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <div className="md:col-span-1">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-6 h-6 rounded bg-brand-600 flex items-center justify-center text-white">
+                  <Leaf className="w-3.5 h-3.5" />
+                </div>
+                <span className="text-lg font-semibold tracking-tight text-slate-900 dark:text-white">Eco-Sync</span>
               </div>
-              Eco-Sync
+              <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed pr-4">
+                Standardizing campus operations and driving sustainable practices through precise data telemetry.
+              </p>
             </div>
-            <p className="font-semibold max-w-sm mb-6 text-neo-text/80">
-              Revolutionizing waste management with data-driven routing and smart hardware.
-            </p>
+            
+            <div>
+              <h4 className="text-slate-900 dark:text-white font-semibold mb-6 text-sm tracking-tight">Products</h4>
+              <ul className="space-y-4 text-sm text-slate-500 dark:text-slate-400 font-medium">
+                <li><Link href="/student" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Student Portal</Link></li>
+                <li><Link href="/board" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Admin Console</Link></li>
+                <li><Link href="#" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Integrations</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="text-slate-900 dark:text-white font-semibold mb-6 text-sm tracking-tight">Company</h4>
+              <ul className="space-y-4 text-sm text-slate-500 dark:text-slate-400 font-medium">
+                <li><Link href="#" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">About</Link></li>
+                <li><Link href="#" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Careers</Link></li>
+                <li><Link href="#" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Contact</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="text-slate-900 dark:text-white font-semibold mb-6 text-sm tracking-tight">Legal</h4>
+              <ul className="space-y-4 text-sm text-slate-500 dark:text-slate-400 font-medium">
+                <li><Link href="#" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Privacy Policy</Link></li>
+                <li><Link href="#" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Terms of Service</Link></li>
+              </ul>
+            </div>
           </div>
-          
-          <div>
-            <h4 className="font-black uppercase text-xl mb-4">Platform</h4>
-            <ul className="space-y-2 font-bold text-neo-text/70">
-              <li><Link href="/signup" className="hover:text-neo-secondary transition-colors">Get Started</Link></li>
-              <li><Link href="/login" className="hover:text-neo-secondary transition-colors">Customer Login</Link></li>
-              <li><a href="#" className="hover:text-neo-secondary transition-colors">Pricing</a></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h4 className="font-black uppercase text-xl mb-4">Company</h4>
-            <ul className="space-y-2 font-bold text-neo-text/70">
-              <li><a href="#mission" className="hover:text-neo-secondary transition-colors">Our Mission</a></li>
-              <li><a href="#" className="hover:text-neo-secondary transition-colors">Careers</a></li>
-              <li><a href="#" className="hover:text-neo-secondary transition-colors">Contact</a></li>
-              <li><a href="#" className="hover:text-neo-secondary transition-colors">Privacy Policy</a></li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="container mx-auto border-t-3 border-neo-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="font-bold text-sm">© {new Date().getFullYear()} Eco-Sync Inc. All rights reserved.</p>
-          <div className="flex gap-4">
-            <div className="w-10 h-10 border-3 border-neo-border rounded-full flex items-center justify-center bg-white shadow-neo font-bold hover:-translate-y-1 cursor-pointer transition-transform">𝕏</div>
-            <div className="w-10 h-10 border-3 border-neo-border rounded-full flex items-center justify-center bg-white shadow-neo font-bold hover:-translate-y-1 cursor-pointer transition-transform">In</div>
+          <div className="pt-8 border-t border-slate-200 dark:border-[#3c4043] flex flex-col md:flex-row justify-between items-center text-sm text-slate-500 dark:text-slate-400 font-medium">
+            <p>© {new Date().getFullYear()} Eco-Sync Technologies. All rights reserved.</p>
           </div>
         </div>
       </footer>

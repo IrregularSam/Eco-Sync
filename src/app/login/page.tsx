@@ -1,62 +1,62 @@
 'use client';
-
 import { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function Login() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState<'student' | 'board'>('student');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    // Simulate Customer Login
-    setTimeout(() => {
-      setLoading(false);
-      router.push('/user');
-    }, 1000);
+    if (role === 'student') router.push('/student');
+    else router.push('/board');
   };
 
   return (
-    <main className="min-h-screen bg-neo-primary flex flex-col items-center justify-center p-6 relative overflow-hidden">
-      <div className="absolute inset-0 z-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 2px, transparent 2px)', backgroundSize: '32px 32px' }}></div>
-
-      <div className="neo-card max-w-md w-full relative z-10 bg-neo-bg">
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-block mb-4 text-4xl hover:-translate-y-1 transition-transform">♻️</Link>
-          <h1 className="text-3xl font-black uppercase">Welcome Back</h1>
-          <p className="text-neo-text/70 font-semibold mt-2">Log in to your Eco-Sync portal.</p>
+    <main className="min-h-screen bg-slate-50 dark:bg-[#1a1a1b] flex items-center justify-center p-6">
+      <div className="card w-full max-w-md p-10 flex flex-col items-center">
+        <div className="w-12 h-12 rounded bg-brand-600 flex items-center justify-center text-white mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
         </div>
+        
+        <h1 className="text-2xl font-medium text-slate-900 dark:text-white mb-2">Sign in</h1>
+        <p className="text-slate-600 dark:text-slate-400 mb-8 text-center text-sm">Use your Eco-Sync account</p>
 
-        <form onSubmit={handleLogin} className="space-y-5">
-          <div>
-            <label className="block font-bold mb-2 uppercase text-sm">Email</label>
-            <input type="email" className="neo-input" placeholder="jane@example.com" required />
-          </div>
-          <div>
-            <label className="block font-bold mb-2 uppercase text-sm">Password</label>
-            <input type="password" className="neo-input" placeholder="••••••••" required />
-          </div>
-
-          <button type="submit" className="neo-btn w-full mt-6 text-xl" disabled={loading}>
-            {loading ? 'Authenticating...' : 'Log In'}
+        <div className="w-full flex rounded-md bg-slate-100 dark:bg-[#303134] p-1 mb-8 border border-slate-200 dark:border-[#3c4043]">
+          <button 
+            className={`flex-1 py-2 text-sm font-medium rounded-sm transition-colors ${role === 'student' ? 'bg-white dark:bg-[#424448] shadow-sm text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
+            onClick={() => setRole('student')}
+          >
+            Student
           </button>
-        </form>
+          <button 
+            className={`flex-1 py-2 text-sm font-medium rounded-sm transition-colors ${role === 'board' ? 'bg-white dark:bg-[#424448] shadow-sm text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
+            onClick={() => setRole('board')}
+          >
+            Board Admin
+          </button>
+        </div>
 
-        {/* DEMO NAVIGATION LINKS */}
-        <div className="mt-8 border-t-3 border-neo-border pt-6">
-          <p className="font-black text-center uppercase mb-4 text-sm text-neo-secondary">Presentation Demo Links</p>
-          <div className="grid gap-3">
-             <button onClick={() => router.push('/user')} className="neo-btn-secondary w-full text-sm">Demo: Log in as Customer</button>
-             <button onClick={() => router.push('/admin')} className="neo-btn-secondary w-full text-sm">Demo: Log in as Admin</button>
-             <button onClick={() => router.push('/staff')} className="neo-btn-secondary w-full text-sm">Demo: Log in as Staff</button>
+        <form onSubmit={handleLogin} className="w-full space-y-5">
+          <div>
+            <input required type="email" placeholder="Email or phone" className="input-field" />
           </div>
-        </div>
-
-        <div className="mt-6 text-center font-bold border-t-3 border-neo-border pt-6 mt-8">
-          New here? <Link href="/signup" className="text-neo-secondary hover:underline">Get a Smart Bin</Link>
-        </div>
+          <div>
+            <input required type="password" placeholder="Enter your password" className="input-field" />
+          </div>
+          
+          <div className="flex items-center justify-between mt-4">
+            <Link href="/signup" className="text-brand-600 dark:text-brand-400 font-medium text-sm hover:underline">
+              Create account
+            </Link>
+            <button type="submit" className="btn-primary">
+              Next
+            </button>
+          </div>
+        </form>
       </div>
     </main>
   );

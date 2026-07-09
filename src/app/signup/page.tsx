@@ -41,13 +41,9 @@ export default function Signup() {
         <p className="text-slate-600 dark:text-slate-400 mb-8 text-center text-sm">Join the Eco-Sync initiative</p>
 
         <form onSubmit={handleSignup} className="w-full space-y-5">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <input required type="text" placeholder="First name" className="input-field" />
-            </div>
-            <div>
-              <input required type="text" placeholder="Full Name" className="input-field" value={fullName} onChange={(e) => setFullName(e.target.value)} />
-            </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Full Name</label>
+            <input required type="text" placeholder="John Doe" className="input-field" value={fullName} onChange={(e) => setFullName(e.target.value)} />
           </div>
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Email</label>

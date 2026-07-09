@@ -1,13 +1,31 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useState } from 'react';
+import { api } from '@/lib/api';
 
 export default function Signup() {
   const router = useRouter();
+  
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
+  const [location, setLocation] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    router.push('/user');
+    setIsLoading(true);
+    try {
+      await api.registerUser(fullName, email, address, location, password);
+      router.push('/user');
+    } catch (error) {
+      console.error(error);
+      alert('Signup failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -28,22 +46,31 @@ export default function Signup() {
               <input required type="text" placeholder="First name" className="input-field" />
             </div>
             <div>
-              <input required type="text" placeholder="Last name" className="input-field" />
+              <input required type="text" placeholder="Full Name" className="input-field" value={fullName} onChange={(e) => setFullName(e.target.value)} />
             </div>
           </div>
           <div>
-            <input required type="email" placeholder="University Email" className="input-field" />
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Email</label>
+            <input required type="email" placeholder="Email Address" className="input-field" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div>
-            <input required type="password" placeholder="Password" className="input-field" />
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Address</label>
+            <input required type="text" placeholder="Street Address" className="input-field" value={address} onChange={(e) => setAddress(e.target.value)} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Location / Zone</label>
+            <input required type="text" placeholder="e.g. District 4" className="input-field" value={location} onChange={(e) => setLocation(e.target.value)} />
+          </div>
+          <div>
+            <input required type="password" placeholder="Password" className="input-field" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
           
           <div className="flex items-center justify-between mt-8">
             <Link href="/login" className="text-brand-600 dark:text-brand-400 font-medium text-sm hover:underline">
               Sign in instead
             </Link>
-            <button type="submit" className="btn-primary">
-              Next
+            <button type="submit" className="btn-primary" disabled={isLoading}>
+              {isLoading ? 'Creating...' : 'Next'}
             </button>
           </div>
         </form>

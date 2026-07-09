@@ -18,7 +18,7 @@ export default function ReportIssue() {
           </svg>
         </div>
         <h2 className="text-2xl font-medium text-slate-900 dark:text-white mb-2">Report Submitted</h2>
-        <p className="text-slate-600 dark:text-slate-400 mb-8">Thank you for keeping the campus clean. The maintenance team has been notified.</p>
+        <p className="text-slate-600 dark:text-slate-400 mb-8">Thank you for keeping the community clean. The maintenance team has been notified.</p>
         <button onClick={() => setIsSubmitted(false)} className="btn-secondary w-full">
           Report Another Issue
         </button>

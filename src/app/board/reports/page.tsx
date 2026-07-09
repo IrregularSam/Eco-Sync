@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 export default function BoardReports() {
   const [reports, setReports] = useState([
-    { id: 'REP-001', location: 'Hostel A, Floor 1', type: 'Overflowing', reporter: 'Dahunsi S.', status: 'Pending', date: '2026-06-06' },
+    { id: 'REP-001', location: 'District 4, Main Street', type: 'Overflowing', reporter: 'Dahunsi S.', status: 'Pending', date: '2026-06-06' },
     { id: 'REP-002', location: 'Science Block B', type: 'Damaged Bin', reporter: 'Alice W.', status: 'Pending', date: '2026-06-06' },
     { id: 'REP-003', location: 'Cafeteria', type: 'Missed Pickup', reporter: 'John M.', status: 'Resolved', date: '2026-06-05' },
     { id: 'REP-004', location: 'Library Area', type: 'Overflowing', reporter: 'Sarah T.', status: 'Pending', date: '2026-06-05' },

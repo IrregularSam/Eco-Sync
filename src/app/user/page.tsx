@@ -19,7 +19,7 @@ export default function UserDashboard() {
         <div className="card p-6">
            <div className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Waste Logged</div>
            <div className="text-4xl font-medium text-blue-600 dark:text-blue-400 mb-2">12kg</div>
-           <div className="text-sm text-slate-600 dark:text-slate-400">Top 15% of campus</div>
+           <div className="text-sm text-slate-600 dark:text-slate-400">Top 15% of community</div>
         </div>
         
         <div className="card p-6">

@@ -2,15 +2,32 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { api } from '@/lib/api';
 
 export default function Login() {
   const router = useRouter();
   const [role, setRole] = useState<'user' | 'board'>('user');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (role === 'user') router.push('/user');
-    else router.push('/board');
+    setIsLoading(true);
+    try {
+      if (role === 'user') {
+        await api.loginUser(email, password);
+        router.push('/user');
+      } else {
+        await api.loginAdmin(email, password);
+        router.push('/board');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Login failed. Please check your credentials.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -42,18 +59,18 @@ export default function Login() {
 
         <form onSubmit={handleLogin} className="w-full space-y-5">
           <div>
-            <input required type="email" placeholder="Email or phone" className="input-field" />
+            <input required type="email" placeholder="Email address" className="input-field" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div>
-            <input required type="password" placeholder="Enter your password" className="input-field" />
+            <input required type="password" placeholder="Password" className="input-field" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
           
-          <div className="flex items-center justify-between mt-4">
+          <div className="flex items-center justify-between mt-8">
             <Link href="/signup" className="text-brand-600 dark:text-brand-400 font-medium text-sm hover:underline">
-              Create account
+              Create an account
             </Link>
-            <button type="submit" className="btn-primary">
-              Next
+            <button type="submit" className="btn-primary" disabled={isLoading}>
+              {isLoading ? 'Signing in...' : 'Sign In'}
             </button>
           </div>
         </form>

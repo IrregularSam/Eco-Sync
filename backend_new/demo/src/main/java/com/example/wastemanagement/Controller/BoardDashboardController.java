@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
+@CrossOrigin(origins = "http://localhost:3000")
 public class BoardDashboardController {
 
     public List<WasteEntry> sampleEntries =new java.util.ArrayList<>(java.util.List.of(
@@ -27,7 +28,7 @@ public class BoardDashboardController {
     @PostMapping("/login")
     public String login(@RequestParam String email, @RequestParam String password) {
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "SELECT * FROM BoardAdmin WHERE contactInfo=Info=? AND password=?";
+            String sql = "SELECT * FROM BoardAdmin WHERE contactInfo=? AND password=?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, email);
             stmt.setString(2, password);
@@ -83,7 +84,7 @@ public class BoardDashboardController {
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             if( rs.next()) {
-                return "Analytics Summmary = Total Reports: " + rs.getInt("totalRequests") + 
+                return "Analytics Summmary = Total Reports: " + rs.getInt("totalReports") + 
                 "Total Waste Collected: " + rs.getInt("totalWaste");
             } else {
                 return "No data available.";

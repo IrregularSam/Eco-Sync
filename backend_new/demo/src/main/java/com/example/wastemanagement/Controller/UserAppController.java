@@ -13,14 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserAppController {
 
     //LOGIN
     @PostMapping("/login")
     public String login(@RequestParam String email, @RequestParam String password) {
         try(Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "SELECT * FROM Users WHERE email=/? AND password=?";
+            String sql = "SELECT * FROM Users WHERE email=? AND password=?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, email);
             stmt.setString(2, password);
@@ -40,7 +41,7 @@ public class UserAppController {
     @PostMapping("/waste-entry")
     public String logWaste(@RequestBody WasteEntry entry) {
         try(Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "INSERT INTO WasteEntry (userId, wasteType, quantity, timestamp) VALUES (?, ?, ?, NOW())";
+            String sql = "INSERT INTO WasteEntry (userId, wasteType, quantity, timestamp) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, entry.getUserId());
             stmt.setString(2, entry.getWasteType());
@@ -57,7 +58,7 @@ public class UserAppController {
     @PostMapping("/report")
     public String submitReport(@RequestBody WasteReport report) {
         try(Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "INSERT INTO Report (userId, location, issueType, status, timestamp) VALUE (?, ?, ?, 'Pending', NOW())";
+            String sql = "INSERT INTO Reports (userId, location, issueType, status, timestamp) VALUES (?, ?, ?, 'Pending', CURRENT_TIMESTAMP)";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, report.getUserId());
             stmt.setString(2, report.getLocation());

@@ -38,7 +38,7 @@ export default function Home() {
       <section className="pt-32 pb-20 px-6 max-w-7xl mx-auto flex flex-col items-center text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 text-sm font-medium mb-8 border border-brand-100 dark:border-brand-900/50">
           <Zap className="w-4 h-4" />
-          <span>The new standard for campus sustainability</span>
+          <span>The new standard for urban sustainability</span>
         </div>
         
         <h1 className="text-5xl md:text-7xl font-semibold tracking-tight text-slate-900 dark:text-white max-w-5xl mb-8 leading-[1.1]">
@@ -46,7 +46,7 @@ export default function Home() {
         </h1>
         
         <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mb-12 leading-relaxed">
-          A centralized platform empowering users to track eco-points, and administrators to orchestrate campus-wide fleet dispatching with mathematical precision.
+          A centralized platform empowering users to track eco-points, and administrators to orchestrate city-wide fleet dispatching with mathematical precision.
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 mt-4">
@@ -116,7 +116,7 @@ export default function Home() {
                      <div className="bg-white dark:bg-[#202124] p-4 rounded-lg border border-slate-200 dark:border-[#3c4043] shadow-sm">
                         <div className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Waste Logged</div>
                         <div className="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-1">12kg</div>
-                        <div className="text-[10px] text-slate-500 dark:text-slate-400">Top 15% of campus</div>
+                        <div className="text-[10px] text-slate-500 dark:text-slate-400">Top 15% of community</div>
                      </div>
                      <div className="bg-white dark:bg-[#202124] p-4 rounded-lg border border-slate-200 dark:border-[#3c4043] shadow-sm">
                         <div className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Next Pickup</div>
@@ -157,7 +157,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-16 text-center max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 dark:text-white mb-4">How Eco-Sync Works</h2>
-            <p className="text-slate-600 dark:text-slate-400 text-lg">A simple, rewarding process for a cleaner campus.</p>
+            <p className="text-slate-600 dark:text-slate-400 text-lg">A simple, rewarding process for a cleaner community.</p>
           </div>
 
           <div className="grid md:grid-cols-4 gap-8 relative">
@@ -169,7 +169,7 @@ export default function Home() {
                 <span className="text-xl font-bold">1</span>
               </div>
               <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Find a Bin</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Locate the nearest designated Eco-Sync waste bin on campus.</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Locate the nearest designated Eco-Sync waste bin in your area.</p>
             </div>
 
             <div className="relative z-10 flex flex-col items-center text-center">
@@ -193,7 +193,7 @@ export default function Home() {
                 <span className="text-xl font-bold">4</span>
               </div>
               <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Score Points</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Earn Eco-Points instantly and climb the campus leaderboard.</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Earn Eco-Points instantly and climb the community leaderboard.</p>
             </div>
           </div>
         </div>
@@ -204,7 +204,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-20 text-center max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 dark:text-white mb-4">Enterprise-grade capabilities</h2>
-            <p className="text-slate-600 dark:text-slate-400 text-lg">Robust tools designed for scale, efficiency, and flawless campus integration.</p>
+            <p className="text-slate-600 dark:text-slate-400 text-lg">Robust tools designed for scale, efficiency, and flawless system integration.</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
@@ -221,7 +221,7 @@ export default function Home() {
                 <Route className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-3">Intelligent Dispatch</h3>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">Automatically aggregate facility reports and instantly dispatch maintenance fleets to critical campus sectors.</p>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">Automatically aggregate facility reports and instantly dispatch maintenance fleets to critical city sectors.</p>
             </div>
             
             <div className="card card-hover p-10 flex flex-col items-start">
@@ -275,7 +275,7 @@ export default function Home() {
                 <span className="text-lg font-semibold tracking-tight text-slate-900 dark:text-white">Eco-Sync</span>
               </div>
               <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed pr-4">
-                Standardizing campus operations and driving sustainable practices through precise data telemetry.
+                Standardizing municipal operations and driving sustainable practices through precise data telemetry.
               </p>
             </div>
             

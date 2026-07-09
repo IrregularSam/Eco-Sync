@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 export default function BoardSchedule() {
   const [schedules, setSchedules] = useState([
-    { id: 1, route: 'Alpha', area: 'Hostels (A, B, C)', day: 'Monday, Thursday', time: '08:00 AM', status: 'Active', driver: 'Team Alpha' },
+    { id: 1, route: 'Alpha', area: 'Districts (1, 2, 3)', day: 'Monday, Thursday', time: '08:00 AM', status: 'Active', driver: 'Team Alpha' },
     { id: 2, route: 'Beta', area: 'Academic Blocks', day: 'Tuesday, Friday', time: '14:00 PM', status: 'Active', driver: 'Team Bravo' },
     { id: 3, route: 'Gamma', area: 'Cafeteria & Shops', day: 'Daily', time: '06:00 AM', status: 'Active', driver: 'Team Charlie' },
   ]);

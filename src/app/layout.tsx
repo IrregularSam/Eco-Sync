@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Eco-Sync Campus Waste Management",
-  description: "Smart campus waste tracking and dynamic routing.",
+  title: "Eco-Sync Waste Management",
+  description: "Smart waste tracking and dynamic routing.",
 };
 
 export default function RootLayout({

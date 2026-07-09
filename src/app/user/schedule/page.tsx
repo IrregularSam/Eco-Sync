@@ -9,7 +9,7 @@ export default function UserSchedule() {
     <div className="max-w-3xl mx-auto space-y-6">
       <header className="mb-8">
         <h1 className="text-2xl font-medium text-slate-900 dark:text-white mb-1">Pickup Schedule</h1>
-        <p className="text-slate-600 dark:text-slate-400">Your designated block: <span className="font-semibold text-slate-900 dark:text-slate-200">Hostel A</span></p>
+        <p className="text-slate-600 dark:text-slate-400">Your designated block: <span className="font-semibold text-slate-900 dark:text-slate-200">District 4</span></p>
       </header>
 
       <div className="card overflow-hidden">

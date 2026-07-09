@@ -3,7 +3,7 @@ export default function BoardDashboard() {
     <div className="space-y-6">
       <header className="mb-8">
         <h1 className="text-2xl font-medium text-slate-900 dark:text-white mb-1">System Overview</h1>
-        <p className="text-slate-600 dark:text-slate-400">Real-time metrics for campus waste operations.</p>
+        <p className="text-slate-600 dark:text-slate-400">Real-time metrics for municipal waste operations.</p>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">

@@ -5,11 +5,11 @@ import Link from 'next/link';
 
 export default function Login() {
   const router = useRouter();
-  const [role, setRole] = useState<'student' | 'board'>('student');
+  const [role, setRole] = useState<'user' | 'board'>('user');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (role === 'student') router.push('/student');
+    if (role === 'user') router.push('/user');
     else router.push('/board');
   };
 
@@ -27,10 +27,10 @@ export default function Login() {
 
         <div className="w-full flex rounded-md bg-slate-100 dark:bg-[#303134] p-1 mb-8 border border-slate-200 dark:border-[#3c4043]">
           <button 
-            className={`flex-1 py-2 text-sm font-medium rounded-sm transition-colors ${role === 'student' ? 'bg-white dark:bg-[#424448] shadow-sm text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
-            onClick={() => setRole('student')}
+            className={`flex-1 py-2 text-sm font-medium rounded-sm transition-colors ${role === 'user' ? 'bg-white dark:bg-[#424448] shadow-sm text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
+            onClick={() => setRole('user')}
           >
-            Student
+            User
           </button>
           <button 
             className={`flex-1 py-2 text-sm font-medium rounded-sm transition-colors ${role === 'board' ? 'bg-white dark:bg-[#424448] shadow-sm text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}

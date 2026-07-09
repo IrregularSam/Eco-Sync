@@ -24,7 +24,7 @@ export default function Home() {
           <div className="flex items-center gap-4">
             <ThemeToggle />
             <Link href="/login" className="btn-text hidden sm:inline-flex text-sm">Sign in</Link>
-            <Link href="/student" className="btn-primary text-sm shadow-sm">
+            <Link href="/user" className="btn-primary text-sm shadow-sm">
               Console
             </Link>
           </div>
@@ -43,12 +43,12 @@ export default function Home() {
         </h1>
         
         <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mb-12 leading-relaxed">
-          A centralized platform empowering students to track eco-points, and administrators to orchestrate campus-wide fleet dispatching with mathematical precision.
+          A centralized platform empowering users to track eco-points, and administrators to orchestrate campus-wide fleet dispatching with mathematical precision.
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4">
-          <Link href="/student" className="btn-primary px-8 py-3 text-base group">
-            Student Portal
+          <Link href="/user" className="btn-primary px-8 py-3 text-base group">
+            User Portal
             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Link>
           <Link href="/board" className="btn-secondary px-8 py-3 text-base">
@@ -70,11 +70,11 @@ export default function Home() {
                  <div className="w-3 h-3 rounded-full bg-slate-300 dark:bg-[#3c4043]"></div>
                </div>
                <div className="h-6 flex-1 max-w-md mx-auto bg-slate-100 dark:bg-[#1a1a1b] rounded-md border border-slate-200 dark:border-[#3c4043] flex items-center px-3">
-                 <span className="text-[10px] text-slate-400 font-mono">ecosync.app/student</span>
+                 <span className="text-[10px] text-slate-400 font-mono">ecosync.app/user</span>
                </div>
              </div>
 
-             {/* Fake App Body (Student Dashboard Replica) */}
+             {/* Fake App Body (User Dashboard Replica) */}
              <div className="flex overflow-hidden h-[450px]">
                 {/* Sidebar Replica */}
                 <div className="w-48 border-r border-slate-200 dark:border-[#3c4043] bg-white dark:bg-[#202124] py-4 hidden md:flex flex-col">
@@ -182,7 +182,7 @@ export default function Home() {
                 <span className="text-xl font-bold">3</span>
               </div>
               <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Log on Platform</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Open the student app and log the estimated weight and type.</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Open the user app and log the estimated weight and type.</p>
             </div>
 
             <div className="relative z-10 flex flex-col items-center text-center">
@@ -210,7 +210,7 @@ export default function Home() {
                 <LayoutDashboard className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-3">Structured Logging</h3>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">Categorize and record waste deposits with precise metadata, ensuring perfectly tracked eco-points across the student body.</p>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">Categorize and record waste deposits with precise metadata, ensuring perfectly tracked eco-points across the user base.</p>
             </div>
             
             <div className="card card-hover p-10 flex flex-col items-start">
@@ -279,7 +279,7 @@ export default function Home() {
             <div>
               <h4 className="text-slate-900 dark:text-white font-semibold mb-6 text-sm tracking-tight">Products</h4>
               <ul className="space-y-4 text-sm text-slate-500 dark:text-slate-400 font-medium">
-                <li><Link href="/student" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Student Portal</Link></li>
+                <li><Link href="/user" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">User Portal</Link></li>
                 <li><Link href="/board" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Admin Console</Link></li>
                 <li><Link href="#" className="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Integrations</Link></li>
               </ul>

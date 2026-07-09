@@ -23,7 +23,7 @@ export default function BoardReports() {
       <header className="mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
         <div>
           <h1 className="text-2xl font-medium text-slate-900 dark:text-white mb-1">Issue Reports</h1>
-          <p className="text-slate-600 dark:text-slate-400">Monitor and resolve student-reported issues.</p>
+          <p className="text-slate-600 dark:text-slate-400">Monitor and resolve user-reported issues.</p>
         </div>
         <div className="flex gap-2 bg-slate-100 dark:bg-[#303134] p-1 rounded-md border border-slate-200 dark:border-[#5f6368]">
           {['All', 'Pending', 'Resolved'].map(f => (

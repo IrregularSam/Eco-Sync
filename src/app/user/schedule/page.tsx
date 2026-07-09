@@ -1,4 +1,4 @@
-export default function StudentSchedule() {
+export default function UserSchedule() {
   const schedules = [
     { day: 'Monday', time: '08:00 AM - 10:00 AM', type: 'General & Plastic' },
     { day: 'Wednesday', time: '08:00 AM - 10:00 AM', type: 'Paper & Cardboard' },

@@ -7,7 +7,7 @@ export default function Signup() {
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push('/student');
+    router.push('/user');
   };
 
   return (
@@ -19,7 +19,7 @@ export default function Signup() {
           </svg>
         </div>
         
-        <h1 className="text-2xl font-medium text-slate-900 dark:text-white mb-2">Create a Student Account</h1>
+        <h1 className="text-2xl font-medium text-slate-900 dark:text-white mb-2">Create a User Account</h1>
         <p className="text-slate-600 dark:text-slate-400 mb-8 text-center text-sm">Join the Eco-Sync initiative</p>
 
         <form onSubmit={handleSignup} className="w-full space-y-5">

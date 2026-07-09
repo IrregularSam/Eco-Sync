@@ -19,13 +19,16 @@ export default function Home() {
             <Link href="#how-it-works" className="hover:text-slate-900 dark:hover:text-white transition-colors">How it Works</Link>
             <Link href="#features" className="hover:text-slate-900 dark:hover:text-white transition-colors">Features</Link>
             <Link href="#impact" className="hover:text-slate-900 dark:hover:text-white transition-colors">Impact</Link>
+            <Link href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">Company</Link>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <ThemeToggle />
-            <Link href="/login" className="btn-text hidden sm:inline-flex text-sm">Sign in</Link>
-            <Link href="/user" className="btn-primary text-sm shadow-sm">
-              Console
+            <Link href="/board" className="btn-text hidden sm:inline-flex text-sm">Admin Console</Link>
+            <div className="h-4 w-px bg-slate-200 dark:bg-slate-700 hidden sm:block mx-1"></div>
+            <Link href="/login" className="btn-text hidden sm:inline-flex text-sm">Log in</Link>
+            <Link href="/signup" className="btn-primary text-sm shadow-sm">
+              Sign up
             </Link>
           </div>
         </div>
@@ -46,13 +49,13 @@ export default function Home() {
           A centralized platform empowering users to track eco-points, and administrators to orchestrate campus-wide fleet dispatching with mathematical precision.
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Link href="/user" className="btn-primary px-8 py-3 text-base group">
-            User Portal
+        <div className="flex flex-col sm:flex-row gap-4 mt-4">
+          <Link href="/signup" className="btn-primary px-8 py-3 text-base group">
+            Get Started for Free
             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Link>
-          <Link href="/board" className="btn-secondary px-8 py-3 text-base">
-            Admin Console
+          <Link href="/login" className="btn-secondary px-8 py-3 text-base">
+            Log in to Dashboard
           </Link>
         </div>
       </section>

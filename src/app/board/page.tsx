@@ -1,10 +1,32 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { api } from '@/lib/api';
 
 export default function BoardDashboard() {
   const [stats, setStats] = useState({ totalUsers: 0, openReports: 0, totalWasteKg: 0 });
   const [isLoading, setIsLoading] = useState(true);
+  
+  const [alertDistrict, setAlertDistrict] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [isSendingAlert, setIsSendingAlert] = useState(false);
+
+  const handleSendAlert = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!alertDistrict || !alertMessage) return;
+    setIsSendingAlert(true);
+    try {
+      await api.sendAlert(alertDistrict, alertMessage);
+      setAlertDistrict('');
+      setAlertMessage('');
+      alert('Alert broadcasted successfully!');
+    } catch (error) {
+      console.error(error);
+      alert('Failed to broadcast alert.');
+    } finally {
+      setIsSendingAlert(false);
+    }
+  };
 
   useEffect(() => {
     api.getAnalytics().then(data => {
@@ -91,9 +113,31 @@ export default function BoardDashboard() {
                </div>
              ))}
              <div className="p-4 text-center">
-               <button className="text-sm font-medium text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300">View All Reports</button>
+               <Link href="/board/reports" className="text-sm font-medium text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300">View All Reports</Link>
              </div>
           </div>
+        </div>
+
+        <div className="card lg:col-span-3">
+          <div className="px-6 py-4 border-b border-slate-200 dark:border-[#3c4043]">
+            <h2 className="text-lg font-medium text-slate-900 dark:text-white">Broadcast Alert</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Send an urgent notification to all users in a specific district.</p>
+          </div>
+          <form onSubmit={handleSendAlert} className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Target District</label>
+              <input required type="text" placeholder="e.g. District 4" className="input-field" value={alertDistrict} onChange={(e) => setAlertDistrict(e.target.value)} />
+            </div>
+            <div className="md:col-span-2 flex gap-4">
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Alert Message</label>
+                <input required type="text" placeholder="e.g. Pickup truck is arriving in 20 minutes." className="input-field" value={alertMessage} onChange={(e) => setAlertMessage(e.target.value)} />
+              </div>
+              <button type="submit" disabled={isSendingAlert} className="btn-primary whitespace-nowrap self-end h-[42px]">
+                {isSendingAlert ? 'Sending...' : 'Send Alert'}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

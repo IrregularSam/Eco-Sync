@@ -22,6 +22,7 @@ export const api = {
         uid: data.user.id, 
         full_name: fullName, 
         address, 
+        district: location,
         role: 'user',
         eco_points: 0
       }]);
@@ -35,7 +36,8 @@ export const api = {
     const { data, error } = await supabase.from('users').insert([{ 
       uid, 
       full_name: email.split('@')[0] || 'Citizen', 
-      address: 'Unknown Zone', 
+      address: 'Unknown Address',
+      district: 'Unknown District',
       role: 'user',
       eco_points: 0
     }]).select().single();
@@ -103,7 +105,21 @@ export const api = {
     const { error: updateError } = await supabase.from('users').update({ eco_points: newPoints }).eq('uid', userId);
     if (updateError) throw updateError;
 
+    // Log the transaction
+    const { error: logError } = await supabase.from('reward_transactions').insert([{
+      user_id: userId,
+      reward_name: 'Eco-Reward Redemption',
+      cost: cost
+    }]);
+    if (logError) throw logError;
+
     return newPoints;
+  },
+
+  getUserHistory: async (userId: string) => {
+    const { data, error } = await supabase.from('reward_transactions').select('*').eq('user_id', userId).order('created_at', { ascending: false });
+    if (error) throw error;
+    return data;
   },
 
   // --- REPORTS ---
@@ -154,5 +170,18 @@ export const api = {
       openReports: reportCount || 0,
       totalWasteKg: Math.round(totalWasteKg * 10) / 10
     };
+  },
+
+  // --- ALERTS ---
+  sendAlert: async (district: string, message: string) => {
+    const { error } = await supabase.from('alerts').insert([{ district, message }]);
+    if (error) throw error;
+    return { success: true };
+  },
+
+  getAlerts: async (district: string) => {
+    const { data, error } = await supabase.from('alerts').select('*').eq('district', district).order('created_at', { ascending: false }).limit(3);
+    if (error) throw error;
+    return data;
   }
 };

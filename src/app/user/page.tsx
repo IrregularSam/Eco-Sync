@@ -8,8 +8,8 @@ export default function UserDashboard() {
   const { user, profile, isLoading } = useUser();
   const [recentLogs, setRecentLogs] = useState<any[]>([]);
   const [totalWaste, setTotalWaste] = useState(0);
+  const [alerts, setAlerts] = useState<any[]>([]);
 
-  useEffect(() => {
     if (user?.id) {
       api.getUserLogs(user.id).then(logs => {
         setRecentLogs(logs.slice(0, 3));
@@ -17,7 +17,10 @@ export default function UserDashboard() {
         setTotalWaste(Math.round(total * 10) / 10);
       });
     }
-  }, [user?.id]);
+    if (profile?.district) {
+      api.getAlerts(profile.district).then(data => setAlerts(data));
+    }
+  }, [user?.id, profile?.district]);
 
   if (isLoading) {
     return <div className="animate-pulse space-y-6">
@@ -47,7 +50,7 @@ export default function UserDashboard() {
         
         <div className="card p-6">
            <div className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Zone</div>
-           <div className="text-4xl font-medium text-orange-600 dark:text-orange-400 mb-2 truncate" title={profile?.address}>{profile?.address || 'N/A'}</div>
+           <div className="text-4xl font-medium text-orange-600 dark:text-orange-400 mb-2 truncate" title={profile?.district || profile?.address}>{profile?.district || profile?.address || 'N/A'}</div>
            <div className="text-sm text-slate-600 dark:text-slate-400">Next pickup tomorrow</div>
         </div>
       </div>
@@ -57,23 +60,41 @@ export default function UserDashboard() {
           <div className="px-6 py-4 border-b border-slate-200 dark:border-[#3c4043]">
             <h2 className="text-lg font-medium text-slate-900 dark:text-white">Quick Actions</h2>
           </div>
-          <div className="p-4 grid grid-cols-2 gap-4">
-            <Link href="/user/log" className="flex flex-col items-center justify-center p-6 rounded-lg border border-slate-200 dark:border-[#3c4043] hover:bg-slate-50 dark:hover:bg-[#303134] transition-colors gap-3">
-              <div className="w-12 h-12 rounded-full bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="p-4 grid grid-cols-2 gap-4 border-b border-slate-200 dark:border-[#3c4043]">
+            <Link href="/user/log" className="flex flex-col items-center justify-center p-4 rounded-lg border border-slate-200 dark:border-[#3c4043] hover:bg-slate-50 dark:hover:bg-[#303134] transition-colors gap-2">
+              <div className="w-10 h-10 rounded-full bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                 </svg>
               </div>
-              <span className="font-medium text-slate-900 dark:text-white">Log Waste</span>
+              <span className="font-medium text-slate-900 dark:text-white text-sm">Log Waste</span>
             </Link>
-            <Link href="/user/report" className="flex flex-col items-center justify-center p-6 rounded-lg border border-slate-200 dark:border-[#3c4043] hover:bg-slate-50 dark:hover:bg-[#303134] transition-colors gap-3">
-              <div className="w-12 h-12 rounded-full bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <Link href="/user/report" className="flex flex-col items-center justify-center p-4 rounded-lg border border-slate-200 dark:border-[#3c4043] hover:bg-slate-50 dark:hover:bg-[#303134] transition-colors gap-2">
+              <div className="w-10 h-10 rounded-full bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
-              <span className="font-medium text-slate-900 dark:text-white">Report Issue</span>
+              <span className="font-medium text-slate-900 dark:text-white text-sm">Report Issue</span>
             </Link>
+          </div>
+          <div className="p-6">
+            <h3 className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-4 uppercase tracking-wider">Live District Alerts</h3>
+            {alerts.length > 0 ? (
+              <div className="space-y-3">
+                {alerts.map((alert) => (
+                  <div key={alert.id} className="p-3 bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 rounded flex gap-3 items-start">
+                    <svg className="w-5 h-5 text-red-500 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <div>
+                      <p className="text-sm text-red-800 dark:text-red-200">{alert.message}</p>
+                      <p className="text-xs text-red-600/70 dark:text-red-400/70 mt-1">{new Date(alert.created_at).toLocaleString()}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-slate-500 dark:text-slate-400 italic">No active alerts for {profile?.district || 'your zone'}.</p>
+            )}
           </div>
         </div>
 

@@ -33,7 +33,7 @@ export default function Profile() {
                 {profile.eco_points} Eco Points
               </span>
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-slate-100 dark:bg-[#303134] text-slate-700 dark:text-slate-300">
-                Zone: {profile.address}
+                Zone: {profile.district || profile.address}
               </span>
             </div>
           </div>
@@ -57,6 +57,10 @@ export default function Profile() {
                <div>
                  <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Street Address</p>
                  <p className="text-slate-900 dark:text-white">{profile.address}</p>
+               </div>
+               <div>
+                 <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">District / Zone</p>
+                 <p className="text-slate-900 dark:text-white">{profile.district || 'N/A'}</p>
                </div>
                <div>
                  <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Account Role</p>

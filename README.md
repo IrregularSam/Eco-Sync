@@ -7,7 +7,9 @@ Waste collection today is inefficient, leading to overflowing bins, wasted fuel,
 
 ## Features
 - **Citizen Portal:** Log waste by kilograms to earn Eco-Points, report damaged or overflowing bins, and redeem points for rewards.
-- **Admin Dashboard:** Monitor system health, view total waste collected, track registered citizens, and resolve real-time issue reports.
+- **Transaction History & Receipts:** Users can view their full reward redemption history and print PDF receipts for each transaction.
+- **Live Notification System:** Real-time, district-targeted alerts sent directly from admins to citizens in specific zones.
+- **Admin Dashboard:** Monitor system health, view total waste collected, broadcast urgent alerts, and resolve real-time issue reports.
 - **Global Auth & State:** Secure authentication powered by Supabase, featuring self-healing user profiles and global context management.
 - **Responsive UI:** A fully responsive, dark-mode optimized, visually stunning interface built with Next.js and Tailwind-inspired styling.
 

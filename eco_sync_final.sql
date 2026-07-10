@@ -79,12 +79,23 @@ DROP POLICY IF EXISTS "Users can insert their own profile" ON public.users;
 DROP POLICY IF EXISTS "Users can view their own profile" ON public.users;
 DROP POLICY IF EXISTS "Users can update their own profile" ON public.users;
 DROP POLICY IF EXISTS "Admins can view all profiles" ON public.users;
+DROP POLICY IF EXISTS "Public can view analytics" ON public.users;
 
 DROP POLICY IF EXISTS "Users can insert their own logs" ON public.waste_logs;
 DROP POLICY IF EXISTS "Users can view their own logs" ON public.waste_logs;
+DROP POLICY IF EXISTS "Public can view logs" ON public.waste_logs;
+
 DROP POLICY IF EXISTS "Users can insert reports" ON public.reports;
 DROP POLICY IF EXISTS "Users can view their own reports" ON public.reports;
 DROP POLICY IF EXISTS "Admins can view all reports" ON public.reports;
+DROP POLICY IF EXISTS "Public can view reports" ON public.reports;
+DROP POLICY IF EXISTS "Public can update reports" ON public.reports;
+
+DROP POLICY IF EXISTS "Users can insert their own transactions" ON public.reward_transactions;
+DROP POLICY IF EXISTS "Users can view their own transactions" ON public.reward_transactions;
+
+DROP POLICY IF EXISTS "Public can view alerts" ON public.alerts;
+DROP POLICY IF EXISTS "Public can insert alerts" ON public.alerts;
 
 
 -- 6. Apply Correct Policies for Users

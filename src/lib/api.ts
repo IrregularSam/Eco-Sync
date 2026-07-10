@@ -3,19 +3,60 @@ import { supabase } from './supabase';
 export const api = {
   // --- AUTH & USERS ---
   registerUser: async (fullName: string, email: string, address: string, location: string, password: string) => {
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    // Only sign up, do NOT insert to the database yet since the user isn't verified.
+    // Store the extra info in raw_user_meta_data so we can retrieve it after OTP verification.
+    const { data, error } = await supabase.auth.signUp({ 
+      email, 
+      password,
+      options: {
+        data: {
+          full_name: fullName,
+          address,
+          location
+        }
+      }
+    });
     if (error) throw error;
-    if (data.user) {
+    return data;
+  },
+
+  verifySignupOtp: async (email: string, token: string) => {
+    // 1. Verify the 6-digit code
+    const { data, error } = await supabase.auth.verifyOtp({ email, token, type: 'signup' });
+    if (error) throw error;
+
+    // 2. The user is now logged in. We can safely insert their profile using the stored metadata.
+    if (data.session?.user) {
+      const user = data.session.user;
+      const meta = user.user_metadata;
+      
       const { error: insertError } = await supabase.from('users').insert([{ 
-        uid: data.user.id, 
-        full_name: fullName, 
-        address, 
+        uid: user.id, 
+        full_name: meta.full_name || email, 
+        address: meta.address || '', 
         role: 'user',
         eco_points: 0
       }]);
-      if (insertError) throw insertError;
+      // If it already exists (e.g. they verified twice), that's fine, ignore insert error
+      if (insertError && insertError.code !== '23505') throw insertError;
     }
     return data;
+  },
+
+  sendPasswordReset: async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email);
+    if (error) throw error;
+  },
+
+  verifyPasswordReset: async (email: string, token: string) => {
+    const { data, error } = await supabase.auth.verifyOtp({ email, token, type: 'recovery' });
+    if (error) throw error;
+    return data;
+  },
+
+  updatePassword: async (newPassword: string) => {
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) throw error;
   },
 
   loginUser: async (email: string, password: string) => {

@@ -1,46 +1,31 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { api } from '@/lib/api';
 
 export default function ForgotPassword() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    
-    // In a full Supabase implementation, you would call:
-    // await supabase.auth.resetPasswordForEmail(email)
-    
-    // For now, simulate network request
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsSubmitted(true);
-    }, 1500);
-  };
+    if (!email) return;
 
-  if (isSubmitted) {
-    return (
-      <main className="min-h-screen bg-slate-50 dark:bg-[#1a1a1b] flex items-center justify-center p-6">
-        <div className="card w-full max-w-md p-10 flex flex-col items-center text-center">
-          <div className="w-16 h-16 rounded-full bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 flex items-center justify-center mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <h1 className="text-2xl font-medium text-slate-900 dark:text-white mb-2">Check your email</h1>
-          <p className="text-slate-600 dark:text-slate-400 mb-8">
-            We've sent a password reset link to <span className="font-medium text-slate-900 dark:text-white">{email}</span>.
-          </p>
-          <Link href="/login" className="btn-primary w-full text-center">
-            Return to Login
-          </Link>
-        </div>
-      </main>
-    );
-  }
+    setIsLoading(true);
+    setErrorMsg('');
+    try {
+      await api.sendPasswordReset(email);
+      router.push(`/login/verify?email=${encodeURIComponent(email)}`);
+    } catch (error: any) {
+      console.error(error);
+      setErrorMsg(error.message || 'Failed to send reset link.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-[#1a1a1b] flex items-center justify-center p-6">
@@ -53,6 +38,12 @@ export default function ForgotPassword() {
         
         <h1 className="text-2xl font-medium text-slate-900 dark:text-white mb-2">Reset Password</h1>
         <p className="text-slate-600 dark:text-slate-400 mb-8 text-center text-sm">Enter your email and we'll send you instructions.</p>
+
+        {errorMsg && (
+          <div className="w-full mb-6 p-3 rounded bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm">
+            {errorMsg}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="w-full space-y-5">
           <div>

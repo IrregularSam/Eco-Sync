@@ -30,8 +30,28 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     try {
       const data = await api.getUserProfile(user.id);
       setProfile(data);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to fetch user profile:", error);
+      // PGRST116 means the row was not found (Supabase single() error).
+      // Self-heal by creating a default profile for the user.
+      if (error?.code === 'PGRST116') {
+        try {
+          console.log("Self-healing: Creating missing user profile...");
+          const newProfile = await api.createUserProfile(user.id, user.email || '');
+          if (newProfile) {
+            setProfile(newProfile);
+          } else {
+            // Fallback so it stops loading even if insert fails silently
+            setProfile({ full_name: user.email?.split('@')[0] || 'User', eco_points: 0, address: 'Unknown', role: 'user' });
+          }
+        } catch (insertErr) {
+          console.error("Self-healing failed:", insertErr);
+          setProfile({ full_name: user.email?.split('@')[0] || 'User', eco_points: 0, address: 'Unknown', role: 'user' });
+        }
+      } else {
+        // Stop loading on other errors
+        setProfile({ full_name: 'Error Loading Profile', eco_points: 0, address: 'Error', role: 'user' });
+      }
     }
   };
 

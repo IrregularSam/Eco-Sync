@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Eco-Sync 🌍♻️
 
-## Getting Started
+Eco-Sync is an enterprise-grade web application built to revolutionize municipal waste management through intelligent tracking, dynamic routing, and citizen engagement.
 
-First, run the development server:
+## The Mission
+Waste collection today is inefficient, leading to overflowing bins, wasted fuel, and environmental hazards. Eco-Sync connects citizens directly with waste management authorities, empowering them to log waste, report issues in real-time, and earn Eco-Points for responsible disposal.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
+- **Citizen Portal:** Log waste by kilograms to earn Eco-Points, report damaged or overflowing bins, and redeem points for rewards.
+- **Admin Dashboard:** Monitor system health, view total waste collected, track registered citizens, and resolve real-time issue reports.
+- **Global Auth & State:** Secure authentication powered by Supabase, featuring self-healing user profiles and global context management.
+- **Responsive UI:** A fully responsive, dark-mode optimized, visually stunning interface built with Next.js and Tailwind-inspired styling.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
+- **Frontend Framework:** [Next.js](https://nextjs.org/) (React)
+- **Database & Authentication:** [Supabase](https://supabase.com/) (PostgreSQL)
+- **Styling:** Custom Vanilla CSS (Tailwind-inspired token system)
+- **Deployment:** Vercel
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Team & Contributions
+This project was successfully completed through dedicated teamwork and specialized contributions:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+* **Dahunsi (DIVO CREATES)** 
+  * Lead Frontend Development
+  * State Management & API Integration
+  * System Overhaul & Supabase Architecture Integration
 
-## Learn More
+* **The Eco-Sync Teammates**
+  * **Backend Engineering:** Database Schema, Security (RLS) policies, and API structure.
+  * **UI/UX Design:** Mockups, user flow design, and aesthetic guidelines.
+  * **Documentation:** Project planning, architecture documentation, and presentation materials.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*Built with ❤️ for a cleaner planet.*

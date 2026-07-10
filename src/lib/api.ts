@@ -31,6 +31,19 @@ export const api = {
     return data;
   },
 
+  createUserProfile: async (uid: string, email: string) => {
+    const { data, error } = await supabase.from('users').insert([{ 
+      uid, 
+      full_name: email.split('@')[0] || 'Citizen', 
+      address: 'Unknown Zone', 
+      role: 'user',
+      eco_points: 0
+    }]).select().single();
+    
+    if (error && error.code !== '23505') throw error;
+    return data;
+  },
+
   loginUser: async (email: string, password: string) => {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;

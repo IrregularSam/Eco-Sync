@@ -20,7 +20,7 @@ export default function Signup() {
     setIsLoading(true);
     try {
       await api.registerUser(fullName, email, address, location, password);
-      router.push(`/signup/verify?email=${encodeURIComponent(email)}`);
+      router.push('/user');
     } catch (error) {
       console.error(error);
       alert('Signup failed. Please try again.');

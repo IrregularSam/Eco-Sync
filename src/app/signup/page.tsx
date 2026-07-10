@@ -21,9 +21,9 @@ export default function Signup() {
     try {
       await api.registerUser(fullName, email, address, location, password);
       router.push('/user');
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert('Signup failed. Please try again.');
+      alert('Signup failed: ' + (error.message || 'Unknown error'));
     } finally {
       setIsLoading(false);
     }

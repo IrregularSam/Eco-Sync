@@ -1,109 +1,132 @@
 import { supabase } from './supabase';
 
-// Helper to check if Supabase is actually configured
-const isSupabaseConfigured = () => {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-  return url.length > 0 && url !== 'your_supabase_url_here' && url !== 'https://placeholder-url.supabase.co';
-};
-
-// In-memory fallback database for presentations if Supabase isn't set up yet
-const mockDb = {
-  users: [] as any[],
-  wasteEntries: [] as any[],
-  reports: [] as any[]
-};
-
 export const api = {
-  // --- USER AUTH ---
+  // --- AUTH & USERS ---
   registerUser: async (fullName: string, email: string, address: string, location: string, password: string) => {
-    if (isSupabaseConfigured()) {
-      const { data, error } = await supabase.auth.signUp({ email, password });
-      if (error) throw error;
-      // Insert into users table
-      if (data.user) {
-        await supabase.from('users').insert([{ 
-          uid: data.user.id, 
-          full_name: fullName, 
-          address, 
-          role: 'user' 
-        }]);
-      }
-      return data;
-    } else {
-      console.log('Mock: User Registered', { fullName, email });
-      mockDb.users.push({ id: Date.now().toString(), fullName, email, role: 'user' });
-      return { user: { id: 'mock-user-123' } };
+    const { data, error } = await supabase.auth.signUp({ email, password });
+    if (error) throw error;
+    if (data.user) {
+      const { error: insertError } = await supabase.from('users').insert([{ 
+        uid: data.user.id, 
+        full_name: fullName, 
+        address, 
+        role: 'user',
+        eco_points: 0
+      }]);
+      if (insertError) throw insertError;
     }
+    return data;
   },
 
   loginUser: async (email: string, password: string) => {
-    if (isSupabaseConfigured()) {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) throw error;
-      return data;
-    } else {
-      console.log('Mock: User Logged In', { email });
-      return { user: { id: 'mock-user-123' } };
-    }
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    return data;
   },
   
-  // --- DATA ENTRY ---
-  logWaste: async (userId: string, wasteType: string, quantity: number) => {
-    if (isSupabaseConfigured()) {
-      const { data, error } = await supabase.from('bins').insert([{
-        user_id: userId,
-        qr_hash: Math.random().toString(36).substring(7),
-        fill_status: 'full'
-      }]);
-      if (error) throw error;
-      return data;
-    } else {
-      console.log('Mock: Waste Logged', { userId, wasteType, quantity });
-      mockDb.wasteEntries.push({ userId, wasteType, quantity });
-      return { success: true };
-    }
+  logoutUser: async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
   },
 
-  submitReport: async (userId: string, location: string, issueType: string) => {
-    if (isSupabaseConfigured()) {
-      // Assuming a generic reports table exists or mapping to bins table
-      console.log('Submitting report to Supabase');
-      return { success: true };
-    } else {
-      console.log('Mock: Report Submitted', { location, issueType });
-      mockDb.reports.push({ userId, location, issueType });
-      return { success: true };
+  getUserProfile: async (userId: string) => {
+    const { data, error } = await supabase.from('users').select('*').eq('uid', userId).single();
+    if (error) throw error;
+    return data;
+  },
+
+  // --- WASTE LOGS & REWARDS ---
+  logWaste: async (userId: string, category: string, weight: number) => {
+    const pointsEarned = Math.floor(weight * 50);
+    
+    // 1. Insert into waste_logs
+    const { error: logError } = await supabase.from('waste_logs').insert([{
+      user_id: userId,
+      category,
+      weight_kg: weight,
+      points_earned: pointsEarned
+    }]);
+    if (logError) throw logError;
+
+    // 2. Update user's eco_points
+    const { data: userData, error: userError } = await supabase.from('users').select('eco_points').eq('uid', userId).single();
+    if (userError) throw userError;
+
+    const newPoints = (userData.eco_points || 0) + pointsEarned;
+    const { error: updateError } = await supabase.from('users').update({ eco_points: newPoints }).eq('uid', userId);
+    if (updateError) throw updateError;
+
+    return { pointsEarned, newTotal: newPoints };
+  },
+
+  getUserLogs: async (userId: string) => {
+    const { data, error } = await supabase.from('waste_logs').select('*').eq('user_id', userId).order('created_at', { ascending: false });
+    if (error) throw error;
+    return data;
+  },
+
+  redeemReward: async (userId: string, cost: number) => {
+    const { data: userData, error: userError } = await supabase.from('users').select('eco_points').eq('uid', userId).single();
+    if (userError) throw userError;
+
+    if (userData.eco_points < cost) {
+      throw new Error("Not enough Eco-points");
     }
+
+    const newPoints = userData.eco_points - cost;
+    const { error: updateError } = await supabase.from('users').update({ eco_points: newPoints }).eq('uid', userId);
+    if (updateError) throw updateError;
+
+    return newPoints;
+  },
+
+  // --- REPORTS ---
+  submitReport: async (userId: string, issueType: string, location: string, description: string) => {
+    const { error } = await supabase.from('reports').insert([{
+      user_id: userId,
+      issue_type: issueType,
+      location,
+      description,
+      status: 'Pending'
+    }]);
+    if (error) throw error;
+    return { success: true };
+  },
+
+  getReports: async () => {
+    // Admins can see all reports
+    const { data, error } = await supabase.from('reports').select(`*, users(full_name)`).order('created_at', { ascending: false });
+    if (error) throw error;
+    return data;
+  },
+  
+  resolveReport: async (reportId: string) => {
+    const { error } = await supabase.from('reports').update({ status: 'Resolved' }).eq('id', reportId);
+    if (error) throw error;
   },
 
   // --- ADMIN ---
   loginAdmin: async (email: string, password: string) => {
-    if (isSupabaseConfigured()) {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) throw error;
-      return data;
-    } else {
-      console.log('Mock: Admin Logged In', { email });
-      return { user: { id: 'mock-admin-123' } };
-    }
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    return data;
   },
 
   getAnalytics: async () => {
-    if (isSupabaseConfigured()) {
-      // Fetch real counts from Supabase
-      const { count: userCount } = await supabase.from('users').select('*', { count: 'exact' });
-      const { count: binCount } = await supabase.from('bins').select('*', { count: 'exact' });
-      return {
-        totalReports: binCount || 0,
-        totalWasteCollected: (binCount || 0) * 12,
-        activeRoutes: 4
-      };
-    } else {
-      return {
-        totalReports: mockDb.reports.length + 15, // fake base number
-        totalWasteCollected: mockDb.wasteEntries.reduce((acc, val) => acc + val.quantity, 850),
-        activeRoutes: 4
-      };
-    }
+    // Total users
+    const { count: userCount } = await supabase.from('users').select('*', { count: 'exact' });
+    
+    // Total reports
+    const { count: reportCount } = await supabase.from('reports').select('*', { count: 'exact' }).eq('status', 'Pending');
+    
+    // Total waste
+    const { data: wasteData } = await supabase.from('waste_logs').select('weight_kg');
+    const totalWasteKg = wasteData ? wasteData.reduce((acc, log) => acc + Number(log.weight_kg), 0) : 0;
+
+    return {
+      totalUsers: userCount || 0,
+      openReports: reportCount || 0,
+      totalWasteKg: Math.round(totalWasteKg * 10) / 10
+    };
   }
 };

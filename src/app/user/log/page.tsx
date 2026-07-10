@@ -1,14 +1,32 @@
 'use client';
 import { useState } from 'react';
+import { useUser } from '@/context/UserContext';
+import { api } from '@/lib/api';
 
 export default function LogWaste() {
+  const { user, refreshProfile } = useUser();
   const [selectedCat, setSelectedCat] = useState('');
   const [weight, setWeight] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [earnedPoints, setEarnedPoints] = useState(0);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (selectedCat && weight) setIsSubmitted(true);
+    if (!selectedCat || !weight || !user?.id) return;
+    
+    setIsLoading(true);
+    try {
+      const result = await api.logWaste(user.id, selectedCat, parseFloat(weight));
+      setEarnedPoints(result.pointsEarned);
+      await refreshProfile(); // updates global context
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to log waste");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const categories = ['Plastic', 'Paper', 'Food/Organic', 'Glass', 'Metal', 'E-Waste', 'General Waste'];
@@ -22,7 +40,7 @@ export default function LogWaste() {
           </svg>
         </div>
         <h2 className="text-2xl font-medium text-slate-900 dark:text-white mb-2">Log Recorded</h2>
-        <p className="text-slate-600 dark:text-slate-400 mb-8">You've successfully logged {weight}kg of {selectedCat}. You earned 50 Eco-points!</p>
+        <p className="text-slate-600 dark:text-slate-400 mb-8">You've successfully logged {weight}kg of {selectedCat}. You earned {earnedPoints} Eco-points!</p>
         <button onClick={() => { setIsSubmitted(false); setSelectedCat(''); setWeight(''); }} className="btn-primary w-full">
           Log More Waste
         </button>
@@ -73,8 +91,13 @@ export default function LogWaste() {
           </div>
 
           <div className="pt-4">
-             <button type="submit" disabled={!selectedCat || !weight} className="btn-primary w-full">
-               Submit Log
+             <button type="submit" disabled={!selectedCat || !weight || isLoading} className="btn-primary w-full flex items-center justify-center h-11">
+               {isLoading ? (
+                 <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                 </svg>
+               ) : 'Submit Log'}
              </button>
           </div>
         </form>

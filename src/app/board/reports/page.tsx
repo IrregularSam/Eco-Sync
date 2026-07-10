@@ -1,22 +1,49 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { api } from '@/lib/api';
 
-export default function BoardReports() {
-  const [reports, setReports] = useState([
-    { id: 'REP-001', location: 'District 4, Main Street', type: 'Overflowing', reporter: 'Dahunsi S.', status: 'Pending', date: '2026-06-06' },
-    { id: 'REP-002', location: 'Science Block B', type: 'Damaged Bin', reporter: 'Alice W.', status: 'Pending', date: '2026-06-06' },
-    { id: 'REP-003', location: 'Cafeteria', type: 'Missed Pickup', reporter: 'John M.', status: 'Resolved', date: '2026-06-05' },
-    { id: 'REP-004', location: 'Library Area', type: 'Overflowing', reporter: 'Sarah T.', status: 'Pending', date: '2026-06-05' },
-    { id: 'REP-005', location: 'Admin Building', type: 'Damaged Bin', reporter: 'Mark L.', status: 'Resolved', date: '2026-06-04' },
-  ]);
-
+export default function IssueReports() {
+  const [reports, setReports] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [resolvingId, setResolvingId] = useState<string | null>(null);
   const [filter, setFilter] = useState('All');
 
-  const handleResolve = (id: string) => {
-    setReports(reports.map(r => r.id === id ? { ...r, status: 'Resolved' } : r));
+  const fetchReports = async () => {
+    try {
+      const data = await api.getReports();
+      setReports(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchReports();
+  }, []);
+
+  const handleResolve = async (id: string) => {
+    setResolvingId(id);
+    try {
+      await api.resolveReport(id);
+      await fetchReports();
+    } catch (error) {
+      console.error(error);
+      alert('Failed to resolve report');
+    } finally {
+      setResolvingId(null);
+    }
   };
 
   const filteredReports = filter === 'All' ? reports : reports.filter(r => r.status === filter);
+
+  if (isLoading) {
+    return <div className="animate-pulse space-y-6">
+      <div className="h-10 bg-slate-200 dark:bg-[#303134] rounded w-1/3"></div>
+      <div className="h-64 bg-slate-200 dark:bg-[#303134] rounded"></div>
+    </div>;
+  }
 
   return (
     <div className="space-y-6">
@@ -44,42 +71,56 @@ export default function BoardReports() {
             <thead className="text-xs uppercase bg-slate-50 dark:bg-[#303134] text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-[#3c4043]">
               <tr>
                 <th className="px-6 py-4 font-medium">Report ID</th>
+                <th className="px-6 py-4 font-medium">Reporter</th>
                 <th className="px-6 py-4 font-medium">Location</th>
                 <th className="px-6 py-4 font-medium">Issue Type</th>
-                <th className="px-6 py-4 font-medium">Reporter</th>
+                <th className="px-6 py-4 font-medium">Date</th>
                 <th className="px-6 py-4 font-medium">Status</th>
                 <th className="px-6 py-4 font-medium text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-[#3c4043]">
-              {filteredReports.map((report) => (
-                <tr key={report.id} className="hover:bg-slate-50 dark:hover:bg-[#2a2b2e] transition-colors">
-                  <td className="px-6 py-4 font-medium text-slate-900 dark:text-white">{report.id}</td>
-                  <td className="px-6 py-4">{report.location}</td>
-                  <td className="px-6 py-4">{report.type}</td>
-                  <td className="px-6 py-4">{report.reporter}</td>
-                  <td className="px-6 py-4">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${
+              {filteredReports.length > 0 ? filteredReports.map((report) => (
+                <tr key={report.id} className="hover:bg-slate-50 dark:hover:bg-[#303134] transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900 dark:text-white">
+                    {report.id.slice(0, 8)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+                    {report.users?.full_name || 'Unknown User'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+                    {report.location}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400 capitalize">
+                    {report.issue_type}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+                    {new Date(report.created_at).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                       report.status === 'Resolved' 
-                      ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800' 
-                      : 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800'
+                        ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400' 
+                        : 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-400'
                     }`}>
                       {report.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-right">
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     {report.status === 'Pending' ? (
-                      <button onClick={() => handleResolve(report.id)} className="text-brand-600 dark:text-brand-400 hover:text-brand-800 dark:hover:text-brand-300 font-medium">
-                        Resolve
+                      <button 
+                        onClick={() => handleResolve(report.id)}
+                        disabled={resolvingId === report.id}
+                        className="text-brand-600 dark:text-brand-400 hover:text-brand-900 dark:hover:text-brand-300 disabled:opacity-50"
+                      >
+                        {resolvingId === report.id ? 'Resolving...' : 'Resolve'}
                       </button>
                     ) : (
-                      <span className="text-slate-400 dark:text-slate-500">Done</span>
+                      <span className="text-slate-400">Done</span>
                     )}
                   </td>
                 </tr>
-              ))}
-              
-              {filteredReports.length === 0 && (
+              )) : (
                 <tr>
                   <td colSpan={6} className="px-6 py-8 text-center text-slate-500 dark:text-slate-400">
                     No reports found for the selected filter.

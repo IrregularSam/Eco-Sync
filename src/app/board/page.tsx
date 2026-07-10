@@ -1,4 +1,25 @@
+'use client';
+import { useEffect, useState } from 'react';
+import { api } from '@/lib/api';
+
 export default function BoardDashboard() {
+  const [stats, setStats] = useState({ totalUsers: 0, openReports: 0, totalWasteKg: 0 });
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    api.getAnalytics().then(data => {
+      setStats(data);
+      setIsLoading(false);
+    }).catch(console.error);
+  }, []);
+
+  if (isLoading) {
+    return <div className="animate-pulse space-y-6">
+      <div className="h-10 bg-slate-200 dark:bg-[#303134] rounded w-1/3"></div>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6"><div className="h-24 bg-slate-200 dark:bg-[#303134] rounded col-span-4"></div></div>
+    </div>;
+  }
+
   return (
     <div className="space-y-6">
       <header className="mb-8">
@@ -8,23 +29,23 @@ export default function BoardDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="card p-6 border-l-4 border-l-brand-600 dark:border-l-brand-500">
-           <div className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Total Logs Today</div>
-           <div className="text-3xl font-medium text-slate-900 dark:text-white">1,432</div>
+           <div className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Registered Citizens</div>
+           <div className="text-3xl font-medium text-slate-900 dark:text-white">{stats.totalUsers}</div>
         </div>
         
         <div className="card p-6 border-l-4 border-l-blue-600 dark:border-l-blue-500">
-           <div className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Active Fleet</div>
-           <div className="text-3xl font-medium text-slate-900 dark:text-white">8/10</div>
+           <div className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Total Waste (kg)</div>
+           <div className="text-3xl font-medium text-slate-900 dark:text-white">{stats.totalWasteKg.toLocaleString()}</div>
         </div>
         
         <div className="card p-6 border-l-4 border-l-orange-600 dark:border-l-orange-500">
            <div className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Open Reports</div>
-           <div className="text-3xl font-medium text-slate-900 dark:text-white">24</div>
+           <div className="text-3xl font-medium text-slate-900 dark:text-white">{stats.openReports}</div>
         </div>
 
-        <div className="card p-6 border-l-4 border-l-red-600 dark:border-l-red-500">
-           <div className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Avg Capacity</div>
-           <div className="text-3xl font-medium text-slate-900 dark:text-white">78%</div>
+        <div className="card p-6 border-l-4 border-l-green-600 dark:border-l-green-500">
+           <div className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">System Status</div>
+           <div className="text-3xl font-medium text-green-600 dark:text-green-500">Online</div>
         </div>
       </div>
 

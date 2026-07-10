@@ -1,31 +1,54 @@
 'use client';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { useUser } from '@/context/UserContext';
+import { api } from '@/lib/api';
 
 export default function UserDashboard() {
+  const { user, profile, isLoading } = useUser();
+  const [recentLogs, setRecentLogs] = useState<any[]>([]);
+  const [totalWaste, setTotalWaste] = useState(0);
+
+  useEffect(() => {
+    if (user?.id) {
+      api.getUserLogs(user.id).then(logs => {
+        setRecentLogs(logs.slice(0, 3));
+        const total = logs.reduce((sum, log) => sum + Number(log.weight_kg), 0);
+        setTotalWaste(Math.round(total * 10) / 10);
+      });
+    }
+  }, [user?.id]);
+
+  if (isLoading) {
+    return <div className="animate-pulse space-y-6">
+      <div className="h-10 bg-slate-200 dark:bg-[#303134] rounded w-1/3"></div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6"><div className="h-32 bg-slate-200 dark:bg-[#303134] rounded"></div></div>
+    </div>;
+  }
   return (
     <div className="space-y-6">
       <header className="mb-8">
-        <h1 className="text-2xl font-medium text-slate-900 dark:text-white mb-1">Welcome back, Dahunsi</h1>
+        <h1 className="text-2xl font-medium text-slate-900 dark:text-white mb-1">Welcome back, {profile?.full_name?.split(' ')[0] || 'User'}</h1>
         <p className="text-slate-600 dark:text-slate-400">Here's your Eco-Sync summary for today.</p>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="card p-6">
            <div className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Eco Points</div>
-           <div className="text-4xl font-medium text-brand-600 dark:text-brand-400 mb-2">1,250</div>
-           <div className="text-sm text-slate-600 dark:text-slate-400">+50 this week</div>
+           <div className="text-4xl font-medium text-brand-600 dark:text-brand-400 mb-2">{profile?.eco_points?.toLocaleString() || 0}</div>
+           <div className="text-sm text-slate-600 dark:text-slate-400">Redeemable for rewards</div>
         </div>
         
         <div className="card p-6">
-           <div className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Waste Logged</div>
-           <div className="text-4xl font-medium text-blue-600 dark:text-blue-400 mb-2">12kg</div>
-           <div className="text-sm text-slate-600 dark:text-slate-400">Top 15% of community</div>
+           <div className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Total Waste Logged</div>
+           <div className="text-4xl font-medium text-blue-600 dark:text-blue-400 mb-2">{totalWaste}kg</div>
+           <div className="text-sm text-slate-600 dark:text-slate-400">Impact on environment</div>
         </div>
         
         <div className="card p-6">
-           <div className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Next Pickup</div>
-           <div className="text-4xl font-medium text-orange-600 dark:text-orange-400 mb-2">Tomorrow</div>
-           <div className="text-sm text-slate-600 dark:text-slate-400">08:00 AM - 10:00 AM</div>
+           <div className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Zone</div>
+           <div className="text-4xl font-medium text-orange-600 dark:text-orange-400 mb-2 truncate" title={profile?.address}>{profile?.address || 'N/A'}</div>
+           <div className="text-sm text-slate-600 dark:text-slate-400">Next pickup tomorrow</div>
         </div>
       </div>
 
@@ -59,19 +82,29 @@ export default function UserDashboard() {
             <h2 className="text-lg font-medium text-slate-900 dark:text-white">Recent Activity</h2>
           </div>
           <div className="divide-y divide-slate-100 dark:divide-[#3c4043]">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="px-6 py-4 flex items-center gap-4">
-                <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-[#303134] flex items-center justify-center text-slate-500 dark:text-slate-400">
+            {recentLogs.length > 0 ? recentLogs.map((log) => (
+              <div key={log.id} className="px-6 py-4 flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-[#303134] flex items-center justify-center text-brand-600 dark:text-brand-400">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-slate-900 dark:text-white">Logged 2kg of Plastic</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">2 days ago</p>
+                  <p className="text-sm font-medium text-slate-900 dark:text-white">Logged {log.weight_kg}kg of {log.category}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{new Date(log.created_at).toLocaleDateString()} &bull; +{log.points_earned} pts</p>
                 </div>
               </div>
-            ))}
+            )) : (
+              <div className="px-6 py-8 text-center flex flex-col items-center">
+                <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-[#303134] flex items-center justify-center mb-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <p className="text-sm font-medium text-slate-900 dark:text-white">No recent activity</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Start logging waste to see your history here.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

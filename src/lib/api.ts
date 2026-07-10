@@ -77,6 +77,17 @@ export const api = {
   },
 
   // --- ADMIN ---
+  loginAdmin: async (email: string, password: string) => {
+    if (isSupabaseConfigured()) {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      return data;
+    } else {
+      console.log('Mock: Admin Logged In', { email });
+      return { user: { id: 'mock-admin-123' } };
+    }
+  },
+
   getAnalytics: async () => {
     if (isSupabaseConfigured()) {
       // Fetch real counts from Supabase

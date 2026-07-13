@@ -22,12 +22,9 @@ Waste collection today is inefficient, leading to overflowing bins, wasted fuel,
 ## Team & Contributions
 This project was successfully completed through dedicated teamwork and specialized contributions:
 
-* **Dahunsi (DIVO CREATES)** 
-  * Lead Frontend Development
-  * State Management & API Integration
-  * System Overhaul & Supabase Architecture Integration
 
 * **The Eco-Sync Teammates**
+    *Lead Frontend Development
   * **Backend Engineering:** Database Schema, Security (RLS) policies, and API structure.
   * **UI/UX Design:** Mockups, user flow design, and aesthetic guidelines.
   * **Documentation:** Project planning, architecture documentation, and presentation materials.

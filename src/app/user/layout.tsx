@@ -1,10 +1,48 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { useUser } from '@/context/UserContext';
+import { api } from '@/lib/api';
 
 export default function UserLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { profile } = useUser();
+  const [lastAlertId, setLastAlertId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!profile?.district) return;
+    
+    // Initial fetch to establish baseline so we don't alert old messages
+    api.getAlerts(profile.district).then(alerts => {
+      if (alerts && alerts.length > 0) {
+        setLastAlertId(alerts[0].id);
+      }
+    });
+
+    // Poll every 5 seconds for NEW alerts
+    const interval = setInterval(async () => {
+      try {
+        const alerts = await api.getAlerts(profile.district);
+        if (alerts && alerts.length > 0) {
+          const latest = alerts[0];
+          setLastAlertId(prevId => {
+            if (prevId && prevId !== latest.id) {
+               // We found a new alert!
+               alert(`🚨 URGENT DISTRICT ALERT: ${profile.district} 🚨\n\n${latest.message}`);
+               return latest.id;
+            }
+            return prevId || latest.id;
+          });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [profile?.district]);
 
   const navItems = [
     { name: 'Dashboard', href: '/user', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
